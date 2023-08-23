@@ -17,7 +17,7 @@ async fn axum(
     #[shuttle_shared_db::Postgres] pool: sqlx::PgPool,
     // #[shuttle_static_folder::StaticFolder(folder = "assets")] static_folder: PathBuf,
 ) -> shuttle_axum::ShuttleAxum {
-    sqlx::migrate!().run(&pool).await.expect("Migrations failed :(");
+    sqlx::migrate!("db/migrations").run(&pool).await.expect("Migrations failed :(");
 
 let app = routes(Arc::new(AppState { db: pool.clone() }));
 
