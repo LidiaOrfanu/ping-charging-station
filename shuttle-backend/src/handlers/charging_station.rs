@@ -17,7 +17,7 @@ use crate::{
 };
 
 pub async fn handle_hello() -> &'static str {
-    return "Hello, World!";
+    return "Hello, Lalalala!";
 }
 
 pub async fn handle_post() -> impl IntoResponse {
