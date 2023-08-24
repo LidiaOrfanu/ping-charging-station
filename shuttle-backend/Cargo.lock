@@ -79,6 +79,7 @@ dependencies = [
  "shuttle-secrets",
  "sqlx",
  "tokio",
+ "tower-http",
  "validator",
 ]
 

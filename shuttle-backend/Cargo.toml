@@ -17,5 +17,6 @@ validator = { version = "0.15", features = ["derive"] }
 shuttle-runtime = "0.24.0"
 shuttle-axum = "0.24.0"
 shuttle-secrets = "0.24.0"
+tower-http = { version = "0.4.0", features = ["cors"] }
 
 

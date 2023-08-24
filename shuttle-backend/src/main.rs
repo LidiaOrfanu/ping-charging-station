@@ -1,6 +1,10 @@
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use std::sync::Arc;
-
+use tower_http::cors::{CorsLayer};
+use axum::http::{
+    header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
+    HeaderValue, Method,
+};
 use crate::routes::api_router::create_api_router;
 mod handlers;
 mod models;
@@ -35,7 +39,14 @@ pub async fn axum(
         }
     };
 
-    let app = create_api_router(Arc::new(AppState { db: pool.clone() }));
+    let cors = CorsLayer::new()
+    .allow_origin("http://localhost:5173".parse::<HeaderValue>().unwrap())
+    .allow_methods([Method::GET, Method::POST, Method::PATCH, Method::DELETE])
+    .allow_credentials(true)
+    .allow_headers([AUTHORIZATION, ACCEPT, CONTENT_TYPE]);
+
+    let app = create_api_router(Arc::new(AppState { db: pool.clone() }))
+            .layer(cors);
 
     Ok(app.into())
 }
