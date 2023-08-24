@@ -38,7 +38,7 @@ pub async fn handle_get_all_locations(State(data): State<Arc<AppState>>) -> impl
     ((StatusCode::OK), Json(locations))
 }
 
-pub fn routes(app_state: Arc<AppState>) -> Router {
+pub fn build_router(app_state: Arc<AppState>) -> Router {
     Router::new()
         .route("/hello", get(handle_hello))
         .route("/api/locations", get(handle_get_all_locations))

@@ -1,5 +1,5 @@
 // use std::path::PathBuf;
-use crate::routes::route_all::routes;
+use crate::routes::route_all::build_router;
 use std::sync::Arc;
 mod routes;
 
@@ -19,7 +19,7 @@ async fn axum(
 ) -> shuttle_axum::ShuttleAxum {
     sqlx::migrate!().run(&pool).await.expect("Migrations failed :(");
 
-let app = routes(Arc::new(AppState { db: pool.clone() }));
+let app = build_router(Arc::new(AppState { db: pool.clone() }));
 
 Ok(app.into())
 }
