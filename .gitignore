@@ -1,2 +1,2 @@
-/target
+../shuttle-backend/target
 Secrets*.toml
