@@ -6,8 +6,8 @@ use axum::{
 };
 use serde_json::{json, Value};
 use sqlx::query_as;
-use validator::Validate;
 use std::sync::Arc;
+use validator::Validate;
 
 use crate::{
     models::charging_station::{
@@ -42,31 +42,31 @@ pub async fn handle_post_a_station(
     State(data): State<Arc<AppState>>,
     Json(body): Json<CreateChargingStation>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-        // validate the data before using it
-        if let Err(_valid_e) = body.validate() {
-            // If validation fails, return an error response with the validation message
-            let error_response = json!({
-                "status": "error",
-                "message": "Length problem".to_string()
-            });
-            return Err((StatusCode::BAD_REQUEST, Json(error_response)));
-        }
+    // validate the data before using it
+    if let Err(_valid_e) = body.validate() {
+        // If validation fails, return an error response with the validation message
+        let error_response = json!({
+            "status": "error",
+            "message": "Length problem".to_string()
+        });
+        return Err((StatusCode::BAD_REQUEST, Json(error_response)));
+    }
 
-        let query_existing = format!("SELECT * FROM stations WHERE name = $1");
-        let existing_station = query_as::<_, ChargingStation>(&query_existing)
-            .bind(&body.name)
-            .fetch_optional(&data.db)
-            .await
-            .unwrap();
-    
-        if let Some(_) = existing_station {
-            let error_response = json!({
-                "status": "fail",
-                "message": "Station with that name already exists",
-            });
-            return Err((StatusCode::CONFLICT, Json(error_response)));
-        }
-    
+    let query_existing = format!("SELECT * FROM stations WHERE name = $1");
+    let existing_station = query_as::<_, ChargingStation>(&query_existing)
+        .bind(&body.name)
+        .fetch_optional(&data.db)
+        .await
+        .unwrap();
+
+    if let Some(_) = existing_station {
+        let error_response = json!({
+            "status": "fail",
+            "message": "Station with that name already exists",
+        });
+        return Err((StatusCode::CONFLICT, Json(error_response)));
+    }
+
     let availability_value = if body.availability { "TRUE" } else { "FALSE" };
     let query = format!(
         "INSERT INTO stations (name, location, availability) VALUES ('{}', '{}', {}) RETURNING *",
