@@ -23,15 +23,13 @@ pub async fn axum(
     } else {
         return Err(anyhow::anyhow!("secret was not found").into());
     };
-    let database_url = Db{secret};
+    let database_url = Db { secret };
     let pool = match PgPoolOptions::new()
         .max_connections(10)
         .connect(&database_url.secret)
         .await
     {
-        Ok(pool) => {
-            pool
-        }
+        Ok(pool) => pool,
         Err(_err) => {
             std::process::exit(1);
         }
