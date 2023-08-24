@@ -1,20 +1,21 @@
 [package]
-name = "ping-charging-station"
+name = "app"
 version = "0.1.0"
 edition = "2021"
 
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
 [dependencies]
-axum = "0.6.18"
-shuttle-axum = "0.21.0"
-shuttle-runtime = "0.21.0"
-tokio = "1.28.2"
-shuttle-shared-db = { version = "0.21.0", features = ["postgres", "sqlx"] } 
-sqlx = { version = "0.6.3", default-features = false, features = ["macros", "postgres", "uuid", "chrono", "json", "runtime-tokio-native-tls", "offline"] }
-serde = "1.0.180"
-uuid = "1.4.1"
-chrono = "0.4.26"
-async-trait = "0.1"
-serde_json = "1.0.104"
-shuttle-static-folder = "0.21.0"
-tower-http = { version = "0.4.3", features = ["fs", "cors"] }
-axum-extra = { version = "0.4.2", features = ["spa"] }
+axum = "0.6.19"
+serde = { version = "1.0.173", features = ["derive"] }
+serde_json = "1.0.103"
+tokio = {version = "1.29.1", features = ["full"]}
+sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "any", "postgres", "macros"] }
+anyhow = "1.0.72"
+postgres = "0.19.5"
+validator = { version = "0.15", features = ["derive"] }
+shuttle-runtime = "0.24.0"
+shuttle-axum = "0.24.0"
+shuttle-secrets = "0.24.0"
+
+

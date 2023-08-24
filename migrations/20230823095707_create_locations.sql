@@ -1,8 +1,8 @@
 -- Add migration script here
-create table if not exists locations (
-  id bigint primary key,
-  street TEXT NOT NULL,
-  zip smallint NOT NULL,
-  city TEXT NOT NULL,
-  country TEXT NOT NULL
+CREATE TABLE locations (
+    id  SERIAL PRIMARY KEY,
+    street varchar(255) NOT NULL,
+    zip integer NOT NULL,
+    city varchar(255) NOT NULL,
+    country varchar(255) NOT NULL
 );

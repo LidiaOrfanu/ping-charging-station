@@ -1,25 +1,48 @@
-// use std::path::PathBuf;
-use crate::routes::route_all::build_router;
+use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use std::sync::Arc;
-mod routes;
 
-use sqlx::{Postgres, Pool};
-// use tower_http::services::ServeDir;
+use crate::routes::api_router::create_api_router;
+mod handlers;
+mod models;
+mod routes;
 
 pub struct AppState {
     db: Pool<Postgres>,
 }
 
-#[shuttle_runtime::main]
-async fn axum(
-    // Name your static assets folder by passing `folder = <name>` to `StaticFolder`
-    // If you don't pass a name, it will default to `static`.
-    #[shuttle_shared_db::Postgres] pool: sqlx::PgPool,
-    // #[shuttle_static_folder::StaticFolder(folder = "assets")] static_folder: PathBuf,
-) -> shuttle_axum::ShuttleAxum {
-    sqlx::migrate!().run(&pool).await.expect("Migrations failed :(");
+struct Db {
+    secret: String,
+}
 
-let app = build_router(Arc::new(AppState { db: pool.clone() }));
+#[shuttle_runtime::main]
+pub async fn axum (
+// #[shuttle_shared_db::Postgres] postgres: PgPool,
+#[shuttle_secrets::Secrets] secrets: shuttle_secrets::SecretStore
+) -> shuttle_axum::ShuttleAxum {
+    let secret = if let Some(secret) = secrets.get("DATABASE_URL") {
+        secret
+    } else {
+        return Err(anyhow::anyhow!("secret was not found").into());
+    };
+    let database_url = Db{secret};
+    // let (key, database_url) = env.split_once('=').unwrap();
+    // assert_eq!(key, "DATABASE_URL");
+    let pool = match PgPoolOptions::new()
+        .max_connections(10)
+        .connect(&database_url.secret)
+        .await
+    {
+        Ok(pool) => {
+            print!("🦀 Succesfull connection to the database");
+            pool
+        }
+        Err(err) => {
+            println!("💣 Failed to connect: {err}");
+            std::process::exit(1);
+        }
+    };
+
+    let app = create_api_router(Arc::new(AppState { db: pool.clone() }));
 
 Ok(app.into())
 }
