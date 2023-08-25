@@ -20,17 +20,23 @@ function ChargingStationsDashboard
 
   return (
     <div>
-      <h1>Station List</h1>
-      <ul>
+      <h1>Charging Stations</h1>
+      <div className="station-list">
+        <div className="station-header">
+          <span>Status</span>
+          <span>Station Name</span>
+          <span>Address</span>
+        </div>
         {stations.map(station => (
-          <li key={station.id}>
-            {station.name} - {station.location} ({station.availability ? 'Available' : 'Not Available'})
-          </li>
+          <div className="station-item" key={station.id}>
+            <span className="status">{station.availability ? 'Available' : 'Not Available'}</span>
+            <span className="station-name">{station.name}</span>
+            <span className="address">{station.location}</span>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
 
-export default ChargingStationsDashboard
-;
+export default ChargingStationsDashboard;
