@@ -14,7 +14,7 @@ const Header: React.FC = () => {
     return (
         <header className="header">
           <div className="header__logo">
-            <img src="./src/assets/ping-logo3.png" alt="Logo" className="logo" />
+            <img src="./public/ping-logo3.png" alt="Logo" className="logo" />
           </div>
           <div className="header-content">
             <SearchBar onSearch={handleSearch} />
