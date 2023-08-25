@@ -196,9 +196,10 @@ pub async fn handler_edit_station_by_id(
 }
 
 pub async fn handler_delete_station_by_id(
-    Path(id): Path<i32>,
+    Path(id): Path<String>,
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
+    let id = id.trim().parse::<i32>().unwrap();
     let rows_affected = query("DELETE FROM stations WHERE id = $1")
         .bind(id)
         .execute(&data.db)

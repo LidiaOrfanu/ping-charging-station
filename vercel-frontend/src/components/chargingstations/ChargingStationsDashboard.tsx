@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-interface Station {
+export interface ChargingStation {
   id: number;
   name: string;
   location: string;
   availability: boolean;
 }
 
-function StationList() {
-  const [stations, setStations] = useState<Station[]>([]);
+function ChargingStationsDashboard
+() {
+  const [stations, setStations] = useState<ChargingStation[]>([]);
 
   useEffect(() => {
     fetch('https://ping-charging-station.shuttleapp.rs/api/stations')
@@ -31,4 +32,5 @@ function StationList() {
   );
 }
 
-export default StationList;
+export default ChargingStationsDashboard
+;
