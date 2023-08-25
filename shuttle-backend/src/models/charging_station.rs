@@ -23,8 +23,3 @@ pub struct UpdateChargingStation {
     pub location: Option<String>,
     pub availability: Option<bool>,
 }
-
-#[derive(Serialize)]
-pub struct CreatedResponse {
-    pub id: String,
-}

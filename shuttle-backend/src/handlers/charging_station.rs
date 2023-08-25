@@ -5,30 +5,19 @@ use axum::{
     Json,
 };
 use serde_json::{json, Value};
-use sqlx::query_as;
+use sqlx::{query_as, query};
 use std::sync::Arc;
 use validator::Validate;
 
 use crate::{
     models::charging_station::{
-        ChargingStation, CreateChargingStation, CreatedResponse, UpdateChargingStation,
+        ChargingStation, CreateChargingStation, UpdateChargingStation,
     },
     AppState,
 };
 
 pub async fn handle_hello() -> &'static str {
     return "Hello, Lalalala!";
-}
-
-pub async fn handle_post() -> impl IntoResponse {
-    /*
-        ContentType: Application/Json
-        {"id": "28isi123k"}
-    */
-    let data = CreatedResponse {
-        id: "28isi123k".to_string(),
-    };
-    Json(data)
 }
 
 pub async fn handle_get_all_stations(State(data): State<Arc<AppState>>) -> impl IntoResponse {
@@ -206,24 +195,24 @@ pub async fn handler_edit_station_by_id(
     }
 }
 
-// pub async fn handler_delete_station_by_id(
-//     Path(id): Path<i32>,
-//     State(data): State<Arc<AppState>>,
-// ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-//     let rows_affected = query!("DELETE FROM stations WHERE id = $1", id)
-//         .execute(&data.db)
-//         .await
-//         .unwrap()
-//         .rows_affected();
+pub async fn handler_delete_station_by_id(
+    Path(id): Path<i32>,
+    State(data): State<Arc<AppState>>,
+) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
+    let rows_affected = query!("DELETE FROM stations WHERE id = $1", id)
+        .execute(&data.db)
+        .await
+        .unwrap()
+        .rows_affected();
 
-//     if rows_affected == 0 {
-//         let error_response = json!({
-//             "status": "fail",
-//             "message": format!("Station with ID: {} not found", id)
-//         });
+    if rows_affected == 0 {
+        let error_response = json!({
+            "status": "fail",
+            "message": format!("Station with ID: {} not found", id)
+        });
 
-//         return Err((StatusCode::NOT_FOUND, Json(error_response)));
-//     }
+        return Err((StatusCode::NOT_FOUND, Json(error_response)));
+    }
 
-//     Ok(StatusCode::NO_CONTENT)
-// }
+    Ok(StatusCode::NO_CONTENT)
+}
