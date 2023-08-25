@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './ChargingStationsDashboard.css';
 
 export interface ChargingStation {
   id: number;
@@ -7,8 +8,7 @@ export interface ChargingStation {
   availability: boolean;
 }
 
-function ChargingStationsDashboard
-() {
+function ChargingStationsDashboard() {
   const [stations, setStations] = useState<ChargingStation[]>([]);
 
   useEffect(() => {
@@ -20,16 +20,18 @@ function ChargingStationsDashboard
 
   return (
     <div>
-      <h1>Charging Stations</h1>
+      <h1 className="station-title">Charging Stations</h1>
       <div className="station-list">
         <div className="station-header">
-          <span>Status</span>
-          <span>Station Name</span>
-          <span>Address</span>
+          <span className="status">Status</span>
+          <span className="station-name">Station Name</span>
+          <span className="address">Address</span>
         </div>
         {stations.map(station => (
           <div className="station-item" key={station.id}>
-            <span className="status">{station.availability ? 'Available' : 'Not Available'}</span>
+            <span className={`status ${station.availability ? 'available' : 'not-available'}`}>
+              {station.availability ? 'Available' : 'Not Available'}
+            </span>
             <span className="station-name">{station.name}</span>
             <span className="address">{station.location}</span>
           </div>

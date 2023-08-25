@@ -7,19 +7,24 @@
   background-color: #f9f9f9;
 }
 
+.station-title {
+  margin: 15px;
+  padding: 5px 10px;
+}
 .station-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 2fr 3fr;
   font-weight: bold;
   margin-bottom: 10px;
   padding: 5px 10px;
-  background-color: #ddd;
+  background-color: #01809a;
   border-radius: 5px;
+  color: white;
 }
 
 .station-item {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 2fr 3fr;
   align-items: center;
   margin-bottom: 10px;
   padding: 10px;
@@ -28,14 +33,10 @@
   border-radius: 5px;
 }
 
-.status {
-  width: 20%;
+.available {
+  background-color: lightgreen;
 }
 
-.station-name {
-  width: 40%;
-}
-
-.address {
-  width: 40%;
+.not-available {
+  background-color: lightcoral; 
 }
