@@ -6,23 +6,42 @@ use axum::{
 };
 
 use crate::{
-    handlers::charging_station::{
+    handlers::{charging_station::{
         handle_get_all_stations, handle_hello, handle_post_a_station,
         handler_edit_station_by_id, handler_get_station_by_id, handler_delete_station_by_id
-    },
+    }, location::handle_get_all_locations},
     AppState,
 };
 
-pub fn create_api_router(app_state: Arc<AppState>) -> Router {
+pub fn create_api_locations_router(app_state: Arc<AppState>) -> Router {
     Router::new()
-        .route("/hello", get(handle_hello))
-        .route("/api/stations", get(handle_get_all_stations))
-        .route("/api/station", post(handle_post_a_station))
+        .route("/locations", get(handle_get_all_locations))
+        // .route("/api/location", post(handle_post_a_location))
+        // .route(
+        //     "/api/location/:id",
+        //     get(handler_get_location_by_id)
+        //     .patch(handler_edit_location_by_id)
+        //     .delete(handler_delete_location_by_id),
+        // )
+        .with_state(app_state)
+}
+
+pub fn create_api_stations_router(app_state: Arc<AppState>) -> Router {
+    Router::new()
+        .route("/stations", get(handle_get_all_stations))
+        .route("/station", post(handle_post_a_station))
         .route(
-            "/api/station/:id",
+            "/station/:id",
             get(handler_get_station_by_id)
             .patch(handler_edit_station_by_id)
             .delete(handler_delete_station_by_id),
         )
         .with_state(app_state)
+}
+
+pub fn create_api_router(app_state: Arc<AppState>) -> Router {
+    Router::new()
+        .route("/hello", get(handle_hello))
+        .nest("/api", create_api_stations_router(app_state.clone()))
+        .nest("/api", create_api_locations_router(app_state.clone()))
 }
