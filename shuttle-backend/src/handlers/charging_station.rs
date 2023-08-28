@@ -13,6 +13,7 @@ use crate::{
     models::charging_station::{
         ChargingStation, CreateChargingStation, UpdateChargingStation,
     },
+    models::location::Location,
     AppState,
 };
 
@@ -56,10 +57,25 @@ pub async fn handle_post_a_station(
         return Err((StatusCode::CONFLICT, Json(error_response)));
     }
 
+    let query_location = "SELECT * FROM locations WHERE id = $1";
+    let location = query_as::<_, Location>(&query_location)
+        .bind(&body.location_id)
+        .fetch_one(&data.db)
+        .await
+        .map_err(|e| {
+            (
+                StatusCode::BAD_REQUEST,
+                Json(json!({
+                    "status": "error",
+                    "message": format!("Invalid location_id: {:?}", e)
+                })),
+            )
+        })?;
+
     let availability_value = if body.availability { "TRUE" } else { "FALSE" };
     let query = format!(
         "INSERT INTO stations (name, location, availability) VALUES ('{}', '{}', {}) RETURNING *",
-        body.name, body.location, availability_value
+        body.name, location.id, availability_value
     );
 
     let query_result = query_as::<_, ChargingStation>(&query)
@@ -74,7 +90,7 @@ pub async fn handle_post_a_station(
                     "station": {
                         "id": station.id,
                         "name": station.name,
-                        "location": station.location,
+                        "location": station.location_id,
                         "availability": station.availability
                     }
                 }
@@ -158,17 +174,13 @@ pub async fn handler_edit_station_by_id(
         "UPDATE stations SET name = $1, location = $2, availability = $3 WHERE id = $4 RETURNING *",
     );
 
-    let name = body
-        .name
-        .map_or_else(|| "".to_string(), |value| value.clone());
-    let location = body
-        .location
-        .map_or_else(|| "".to_string(), |value| value.clone());
+    let name = body.name.clone().unwrap_or_else(String::new);
+    let location_id = body.location_id.unwrap_or_default();
     let availability = body.availability.unwrap_or(false);
 
     let query_result = query_as::<_, ChargingStation>(&query)
         .bind(name)
-        .bind(location)
+        .bind(location_id)
         .bind(availability)
         .bind(id)
         .fetch_one(&data.db)
