@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Formik, Field, Form } from 'formik';
 import './AddStationForm.css';
 import { ChargingStationLocation, StationResponse, addStation, getAllLocations } from '../api';
+import { toast } from 'react-toastify';
 
 interface AddStationFormProps {
   onClose: () => void;
@@ -43,13 +44,15 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose }) => {
               actions.resetForm();
               onClose();
               console.log('Added station:', response.data.station);
+              toast.success('Station added successfully!');
             } catch (error) {
               console.error('Error adding station:', error);
+              toast.error('Error adding station.');
             }
           }}
         >
-          {({ values, handleChange }) => (
-            <Form>
+          {({ values, handleChange, handleSubmit }) => (
+            <Form onSubmit={handleSubmit}> 
               <div className="add-station-form__field">
                 <label className="add-station-form__label">Name:</label>
                 <Field
