@@ -19,7 +19,7 @@ pub fn create_api_router(app_state: Arc<AppState>) -> Router {
         .route("/api/stations", get(handle_get_all_stations))
         .route("/api/station", post(handle_post_a_station))
         .route(
-            "/api/stations/:id",
+            "/api/station/:id",
             get(handler_get_station_by_id)
             .patch(handler_edit_station_by_id)
             .delete(handler_delete_station_by_id),
