@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import './ChargingStationsDashboard.css';
+import './ChargingStationDashboard.css';
+import AddStationForm from '../station-form/AddStationForm';
 
 export interface ChargingStation {
   id: number;
@@ -8,8 +9,17 @@ export interface ChargingStation {
   availability: boolean;
 }
 
-function ChargingStationsDashboard() {
+function ChargingStationDashboard() {
   const [stations, setStations] = useState<ChargingStation[]>([]);
+  const [showAddForm, setShowAddForm] = useState(false);
+
+  const handleShowAddForm = () => {
+    setShowAddForm(true);
+  };
+
+  const handleCloseAddForm = () => {
+    setShowAddForm(false);
+  };
 
   useEffect(() => {
     fetch('https://ping-charging-station.shuttleapp.rs/api/stations')
@@ -20,7 +30,12 @@ function ChargingStationsDashboard() {
 
   return (
     <div>
-      <h1 className="station-title">Charging Stations</h1>
+      <div className="header">
+        <h1 className="station-title">Charging Stations</h1>
+        <button onClick={handleShowAddForm} className="add-station-button">
+          Add Station
+        </button>
+      </div>
       <div className="station-list">
         <div className="station-header">
           <span className="status">Status</span>
@@ -37,8 +52,13 @@ function ChargingStationsDashboard() {
           </div>
         ))}
       </div>
+      {showAddForm && (
+        <div className="modal">
+          <AddStationForm onClose={handleCloseAddForm} />
+        </div>
+      )}
     </div>
   );
 }
 
-export default ChargingStationsDashboard;
+export default ChargingStationDashboard;
