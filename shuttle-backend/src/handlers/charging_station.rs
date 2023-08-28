@@ -22,7 +22,7 @@ pub async fn handle_hello() -> &'static str {
 }
 
 pub async fn handle_get_all_stations(State(data): State<Arc<AppState>>) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    const QUERY: &str = "SELECT id, name, location, availability FROM stations";
+    const QUERY: &str = "SELECT id, name, location_id, availability FROM stations";
     let result = query_as::<_, ChargingStation>(QUERY).fetch_all(&data.db).await;
 
     match result {
@@ -86,7 +86,7 @@ pub async fn handle_post_a_station(
 
     let availability_value = if body.availability { "TRUE" } else { "FALSE" };
     let query = format!(
-        "INSERT INTO stations (name, location, availability) VALUES ('{}', '{}', {}) RETURNING *",
+        "INSERT INTO stations (name, location_id, availability) VALUES ('{}', '{}', {}) RETURNING *",
         body.name, location.id, availability_value
     );
 
@@ -102,7 +102,7 @@ pub async fn handle_post_a_station(
                     "station": {
                         "id": station.id,
                         "name": station.name,
-                        "location": station.location_id,
+                        "location_id": station.location_id,
                         "availability": station.availability
                     }
                 }
@@ -183,7 +183,7 @@ pub async fn handler_edit_station_by_id(
     }
 
     let query = format!(
-        "UPDATE stations SET name = $1, location = $2, availability = $3 WHERE id = $4 RETURNING *",
+        "UPDATE stations SET name = $1, location_id = $2, availability = $3 WHERE id = $4 RETURNING *",
     );
 
     let name = body.name.clone().unwrap_or_else(String::new);
