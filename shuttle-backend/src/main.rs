@@ -28,6 +28,7 @@ pub async fn axum(
         return Err(anyhow::anyhow!("secret was not found").into());
     };
     let database_url = Db { secret };
+
     let pool = match PgPoolOptions::new()
         .max_connections(10)
         .connect(&database_url.secret)

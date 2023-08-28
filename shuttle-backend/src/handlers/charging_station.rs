@@ -21,11 +21,23 @@ pub async fn handle_hello() -> &'static str {
     return "Hello, Lalalala!";
 }
 
-pub async fn handle_get_all_stations(State(data): State<Arc<AppState>>) -> impl IntoResponse {
+pub async fn handle_get_all_stations(State(data): State<Arc<AppState>>) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
     const QUERY: &str = "SELECT id, name, location, availability FROM stations";
-    let stations: Vec<ChargingStation> = query_as(QUERY).fetch_all(&data.db).await.unwrap();
-    println!("\n=== select stations with query.map...: \n{:?}", stations);
-    ((StatusCode::OK), Json(stations))
+    let result = query_as::<_, ChargingStation>(QUERY).fetch_all(&data.db).await;
+
+    match result {
+        Ok(stations) => {
+            println!("\n=== select stations: \n{:?}", stations);
+            Ok((StatusCode::OK, Json(stations)))
+        }
+        Err(e) => {
+            let error_response = json!({
+                "status": "error",
+                "message": format!("Error retrieving stations: {:?}", e)
+            });
+            Err((StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)))
+        }
+    }
 }
 
 pub async fn handle_post_a_station(
