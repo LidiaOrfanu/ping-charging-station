@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Field, Form } from 'formik';
 import './AddStationForm.css';
+import { ChargingStationLocation, StationResponse, addStation, getAllLocations } from '../api';
 
 interface AddStationFormProps {
   onClose: () => void;
 }
 
 const AddStationForm: React.FC<AddStationFormProps> = ({ onClose }) => {
+  const [locations, setLocations] = useState<ChargingStationLocation[]>([]);
+
+  useEffect(() => {
+    async function fetchLocations() {
+      try {
+        const fetchedLocations = await getAllLocations();
+        setLocations(fetchedLocations);
+      } catch (error) {
+        console.error('Error fetching locations:', error);
+      }
+    }
+    fetchLocations();
+  }, []);
+
   return (
     <div className="add-station-form-modal">
       <div className="add-station-form">
@@ -14,14 +29,23 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose }) => {
         <Formik
           initialValues={{
             name: '',
-            location: '',
+            location_id: '',
             availability: true,
           }}
-          onSubmit={(values, actions) => {
-            // API call to add station using fetch
-            // Reset form fields after successful submission
-            actions.resetForm();
-            onClose();
+          onSubmit={async (values, actions) => {
+            const locationId = parseInt(values.location_id, 10);
+            try {
+              const response: StationResponse = await addStation({
+                name: values.name,
+                location_id: locationId,
+                availability: values.availability,
+              });
+              actions.resetForm();
+              onClose();
+              console.log('Added station:', response.data.station);
+            } catch (error) {
+              console.error('Error adding station:', error);
+            }
           }}
         >
           {({ values, handleChange }) => (
@@ -38,14 +62,15 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose }) => {
                 <label className="add-station-form__label">Location:</label>
                 <Field
                   as="select"
-                  name="location"
+                  name="location_id"
                   className="add-station-form__input"
                 >
-                  {/* Render location options */}
-                  {/* For example: */}
-                  <option value="location_id1">Location 1</option>
-                  <option value="location_id2">Location 2</option>
-                  {/* ...and so on */}
+                  <option value="">Select a location</option>
+                  {locations.map(location => (
+                    <option key={location.id} value={location.id.toString()}>
+                      {location.street}, {location.city}, {location.country}
+                    </option>
+                  ))}
                 </Field>
               </div>
               <div className="add-station-form__field">
