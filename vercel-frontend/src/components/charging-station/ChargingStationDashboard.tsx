@@ -2,6 +2,7 @@
   import './ChargingStationDashboard.css';
   import AddStationForm from '../station-form/AddStationForm';
 import { ChargingStationLocation, getAllLocations } from '../api';
+import { Link } from 'react-router-dom';
 
   export interface ChargingStation {
     id: number;
@@ -49,6 +50,7 @@ import { ChargingStationLocation, getAllLocations } from '../api';
             <span className="address">Address</span>
           </div>
           {stations.map(station => (
+             <Link key={station.id} to={`/station/${station.id}`}>
             <div className="station-item" key={station.id}>
               <span className={`status ${station.availability ? 'available' : 'not-available'}`}>
                 {station.availability ? 'Available' : 'Not Available'}
@@ -60,6 +62,7 @@ import { ChargingStationLocation, getAllLocations } from '../api';
                 {locations.find(location => location.id === station.location_id)?.country}
               </span>
             </div>
+            </Link>
           ))}
         </div>
         {showAddForm && (
