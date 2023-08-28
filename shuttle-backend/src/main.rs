@@ -1,6 +1,6 @@
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use std::sync::Arc;
-use tower_http::cors::{CorsLayer};
+use tower_http::cors::CorsLayer;
 use axum::http::{
     header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
     HeaderValue, Method,
