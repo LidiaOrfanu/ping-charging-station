@@ -46,4 +46,3 @@ export async function getAllLocations(): Promise<ChargingStationLocation[]> {
     const data = await response.json();
     return data;
   }
-  

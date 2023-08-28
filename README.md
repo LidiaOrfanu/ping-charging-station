@@ -28,3 +28,28 @@ Response:
  },
  "status": "success"
 }
+
+POST location endpoint: <https://ping-charging-station.shuttleapp.rs/api/location>
+example Json Body:
+{
+  "street": "Penguins Land",
+  "zip": 1232,
+  "city": "NoCity",
+  "country": "Antarctica"
+}
+Headers:
+Content-Type: application/json
+
+Response:
+{
+ "data": {
+  "location": {
+   "city": "NoCity",
+   "country": "Antarctica",
+   "id": 2,
+   "street": "Penguins Land",
+   "zip": 1232
+  }
+ },
+ "status": "success"
+}
