@@ -8,8 +8,10 @@ const ChargingStationPage = () => {
   console.log(stationId);
   // use stationId to fetch station details and display them
   return (
-    <div>
-      Hello from Details Page. here will be an edit station and location available
+    <div className="charging-station-page-container">
+      <h1 className="charging-station-page-content">
+        Hello from Details Page. Here will be an edit station and location available.
+      </h1>
     </div>
   );
 };
