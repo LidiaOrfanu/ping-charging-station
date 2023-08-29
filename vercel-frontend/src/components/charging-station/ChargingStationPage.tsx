@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ChargingStation, getStationByID } from '../api';
-// import EditStationNameForm from '../station-form/EditStationNameForm';
-
+import EditStationNameForm from '../station-form/EditStationNameForm';
 
 const ChargingStationPage = () => {
   const { stationId } = useParams();
@@ -29,14 +28,14 @@ const ChargingStationPage = () => {
       </div>
     );
   }
-  // const handleNameChange = (newName: string) => {
-  //   setStation(prevStation => {
-  //     if (prevStation) {
-  //       return { ...prevStation, name: newName };
-  //     }
-  //     return prevStation;
-  //   });
-  // };
+  const handleNameChange = (newName: string) => {
+    setStation(prevStation => {
+      if (prevStation) {
+        return { ...prevStation, name: newName };
+      }
+      return prevStation;
+    });
+  };
   
   console.log(stationId);
   return (
@@ -44,11 +43,11 @@ const ChargingStationPage = () => {
       <h1 className="charging-station-page-content">
         Station Details: {station.name}
       </h1>
-      {/* <EditStationNameForm
+      <EditStationNameForm
         stationId={station.id}
         initialName={station.name}
         onSave={handleNameChange}
-      /> */}
+      />
       <p>Availability: {station.availability ? 'Available' : 'Not Available'}</p>
     </div>
   );

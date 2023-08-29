@@ -53,3 +53,18 @@ Response:
  },
  "status": "success"
 }
+
+Patch station sample
+Request Json Body
+{
+    "name": "NewName",
+    "availability": true/false
+}
+
+Response:
+{
+ "id": 11,
+ "name": "RoyalPEnguinos",
+ "location_id": 2,
+ "availability": true
+}
