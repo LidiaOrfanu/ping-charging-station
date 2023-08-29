@@ -5,22 +5,24 @@ use axum::{
     Json,
 };
 use serde_json::{json, Value};
-use sqlx::{query_as, query};
-use validator::Validate;
+use sqlx::{query, query_as};
 use std::sync::Arc;
+use validator::Validate;
 // use validator::Validate;
 
-use crate::{AppState, models::location::CreateLocation};
 use crate::models;
+use crate::{models::location::CreateLocation, AppState};
 
-pub async fn handler_get_all_locations(State(data): State<Arc<AppState>>) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    const QUERY: &str = "SELECT id, street, zip, city, country FROM locations";
-    let result = query_as::<_, models::location::Location>(QUERY).fetch_all(&data.db).await;
+pub async fn handler_get_all_locations(
+    State(data): State<Arc<AppState>>,
+) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
+    const SQL_QUERY: &str = "SELECT id, street, zip, city, country FROM locations";
+    let existing_locations = query_as::<_, models::location::Location>(SQL_QUERY)
+        .fetch_all(&data.db)
+        .await;
 
-    match result {
-        Ok(locations) => {
-            Ok((StatusCode::OK, Json(locations)))
-        }
+    match existing_locations {
+        Ok(locations) => Ok((StatusCode::OK, Json(locations))),
         Err(e) => {
             let error_response = json!({
                 "status": "error",
@@ -35,13 +37,13 @@ pub async fn handler_get_location_by_id(
     Path(id): Path<i32>,
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    let query = format!("SELECT * FROM locations WHERE id = $1",);
-    let query_result = query_as::<_, models::location::Location>(&query)
+    let sql_query = format!("SELECT * FROM locations WHERE id = $1",);
+    let existing_location = query_as::<_, models::location::Location>(&sql_query)
         .bind(id)
         .fetch_one(&data.db)
         .await;
 
-    match query_result {
+    match existing_location {
         Ok(location) => {
             let location_response = json!({
                 "status": "success",
@@ -67,25 +69,24 @@ pub async fn handler_post_a_location(
     State(data): State<Arc<AppState>>,
     Json(body): Json<CreateLocation>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-
-    if let Err(_valid_e) = body.validate() {
-        let error_response = json!({
+    if let Err(_validation_err) = body.validate() {
+        let validation_error = json!({
             "status": "error",
             "message": "Length problem".to_string()
         });
-        return Err((StatusCode::BAD_REQUEST, Json(error_response)));
+        return Err((StatusCode::BAD_REQUEST, Json(validation_error)));
     }
 
-    let query = format!(
+    let sql_query = format!(
         "INSERT INTO locations (street, zip, city, country) VALUES ('{}', {}, '{}', '{}') RETURNING *",
         body.street, body.zip, body.city, body.country
     );
 
-    let query_result = query_as::<_, models::location::Location>(&query)
+    let existing_location = query_as::<_, models::location::Location>(&sql_query)
         .fetch_one(&data.db)
         .await;
 
-    match query_result {
+    match existing_location {
         Ok(location) => {
             let location_response = json!({
                 "status": "success",

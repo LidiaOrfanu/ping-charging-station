@@ -1,15 +1,8 @@
   import React, { useEffect, useState } from 'react';
   import './ChargingStationDashboard.css';
   import AddStationForm from '../station-form/AddStationForm';
-import { ChargingStationLocation, getAllLocations } from '../api';
+import { ChargingStation, ChargingStationLocation, getAllLocations } from '../api';
 import { Link } from 'react-router-dom';
-
-  export interface ChargingStation {
-    id: number;
-    name: string;
-    location_id: number;
-    availability: boolean;
-  }
 
   function ChargingStationDashboard() {
     const [stations, setStations] = useState<ChargingStation[]>([]);

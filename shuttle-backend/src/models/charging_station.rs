@@ -19,6 +19,5 @@ pub struct CreateChargingStation {
 #[derive(Debug, Deserialize, Serialize, sqlx::FromRow)]
 pub struct UpdateChargingStation {
     pub name: Option<String>,
-    pub location_id: Option<i32>,
     pub availability: Option<bool>,
 }

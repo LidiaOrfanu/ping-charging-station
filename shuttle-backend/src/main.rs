@@ -1,11 +1,11 @@
-use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
-use std::sync::Arc;
-use tower_http::cors::CorsLayer;
+use crate::routes::api_router::create_api_router;
 use axum::http::{
     header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
     HeaderValue, Method,
 };
-use crate::routes::api_router::create_api_router;
+use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
+use std::sync::Arc;
+use tower_http::cors::CorsLayer;
 mod handlers;
 mod models;
 mod routes;
@@ -41,13 +41,16 @@ pub async fn axum(
     };
 
     let cors = CorsLayer::new()
-    .allow_origin("https://ping-charging-station.vercel.app".parse::<HeaderValue>().unwrap())
-    .allow_methods([Method::GET, Method::POST, Method::PATCH, Method::DELETE])
-    .allow_credentials(true)
-    .allow_headers([AUTHORIZATION, ACCEPT, CONTENT_TYPE]);
+        .allow_origin(
+            "https://ping-charging-station.vercel.app"
+                .parse::<HeaderValue>()
+                .unwrap(),
+        )
+        .allow_methods([Method::GET, Method::POST, Method::PATCH, Method::DELETE])
+        .allow_credentials(true)
+        .allow_headers([AUTHORIZATION, ACCEPT, CONTENT_TYPE]);
 
-    let app = create_api_router(Arc::new(AppState { db: pool.clone() }))
-            .layer(cors);
+    let app = create_api_router(Arc::new(AppState { db: pool.clone() })).layer(cors);
 
     Ok(app.into())
 }

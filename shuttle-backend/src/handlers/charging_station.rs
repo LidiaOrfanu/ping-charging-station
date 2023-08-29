@@ -5,14 +5,12 @@ use axum::{
     Json,
 };
 use serde_json::{json, Value};
-use sqlx::{query_as, query};
+use sqlx::{query, query_as};
 use std::sync::Arc;
 use validator::Validate;
 
 use crate::{
-    models::charging_station::{
-        ChargingStation, CreateChargingStation, UpdateChargingStation,
-    },
+    models::charging_station::{ChargingStation, CreateChargingStation, UpdateChargingStation},
     models::location::Location,
     AppState,
 };
@@ -21,9 +19,13 @@ pub async fn handle_hello() -> &'static str {
     return "Hello, Lalalala!";
 }
 
-pub async fn handle_get_all_stations(State(data): State<Arc<AppState>>) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
+pub async fn handle_get_all_stations(
+    State(data): State<Arc<AppState>>,
+) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
     const QUERY: &str = "SELECT id, name, location_id, availability FROM stations";
-    let result = query_as::<_, ChargingStation>(QUERY).fetch_all(&data.db).await;
+    let result = query_as::<_, ChargingStation>(QUERY)
+        .fetch_all(&data.db)
+        .await;
 
     match result {
         Ok(stations) => {
@@ -44,9 +46,7 @@ pub async fn handle_post_a_station(
     State(data): State<Arc<AppState>>,
     Json(body): Json<CreateChargingStation>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    // validate the data before using it
     if let Err(_valid_e) = body.validate() {
-        // If validation fails, return an error response with the validation message
         let error_response = json!({
             "status": "error",
             "message": "Length problem".to_string()
@@ -54,8 +54,8 @@ pub async fn handle_post_a_station(
         return Err((StatusCode::BAD_REQUEST, Json(error_response)));
     }
 
-    let query_existing = format!("SELECT * FROM stations WHERE name = $1");
-    let existing_station = query_as::<_, ChargingStation>(&query_existing)
+    let sql_query_existing_station = format!("SELECT * FROM stations WHERE name = $1");
+    let existing_station = query_as::<_, ChargingStation>(&sql_query_existing_station)
         .bind(&body.name)
         .fetch_optional(&data.db)
         .await
@@ -69,8 +69,8 @@ pub async fn handle_post_a_station(
         return Err((StatusCode::CONFLICT, Json(error_response)));
     }
 
-    let query_location = "SELECT * FROM locations WHERE id = $1";
-    let location = query_as::<_, Location>(&query_location)
+    let sql_query_location = "SELECT * FROM locations WHERE id = $1";
+    let location = query_as::<_, Location>(&sql_query_location)
         .bind(&body.location_id)
         .fetch_one(&data.db)
         .await
@@ -96,18 +96,18 @@ pub async fn handle_post_a_station(
 
     match query_result {
         Ok(station) => {
-            let station_response = json!({
-                "status": "success",
-                "data": {
-                    "station": {
-                        "id": station.id,
-                        "name": station.name,
-                        "location_id": station.location_id,
-                        "availability": station.availability
-                    }
-                }
-            });
-            return Ok((StatusCode::CREATED, Json(station_response)));
+            // let station_response = json!({
+            //     "status": "success",
+            //     "data": {
+            //         "station": {
+            //             "id": station.id,
+            //             "name": station.name,
+            //             "location_id": station.location_id,
+            //             "availability": station.availability
+            //         }
+            //     }
+            // });
+            return Ok((StatusCode::CREATED, Json(station)));
         }
         Err(e) => {
             if e.to_string()
@@ -167,55 +167,48 @@ pub async fn handler_edit_station_by_id(
     State(data): State<Arc<AppState>>,
     Json(body): Json<UpdateChargingStation>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    let query = format!("SELECT * FROM stations WHERE id = $1",);
-    let query_result = query_as::<_, ChargingStation>(&query)
+    let sql_query = "SELECT * FROM stations WHERE id = $1";
+    let existing_station = query_as::<_, ChargingStation>(sql_query)
         .bind(id)
-        .fetch_one(&data.db)
+        .fetch_optional(&data.db)
         .await;
 
-    if query_result.is_err() {
+    if let Some(mut station) = existing_station.unwrap() {
+        if let Some(new_name) = &body.name {
+            station.name = new_name.clone();
+        }
+        if let Some(new_availability) = body.availability {
+            station.availability = new_availability;
+        }
+
+        let update_sql_query =
+            "UPDATE stations SET name = $1, availability = $2 WHERE id = $3 RETURNING *";
+        let updated_station: Result<ChargingStation, _> =
+            query_as::<_, ChargingStation>(update_sql_query)
+                .bind(station.name)
+                .bind(station.availability)
+                .bind(id)
+                .fetch_one(&data.db)
+                .await;
+
+        match updated_station {
+            Ok(updated) => {
+                return Ok((StatusCode::OK, Json(updated)));
+            }
+            Err(err) => {
+                let error_response = json!({
+                    "status": "error",
+                    "message": format!("{:?}", err)
+                });
+                return Err((StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)));
+            }
+        }
+    } else {
         let error_response = json!({
             "status": "fail",
             "message": format!("Station with ID: {} not found", id)
         });
-
         return Err((StatusCode::NOT_FOUND, Json(error_response)));
-    }
-
-    let query = format!(
-        "UPDATE stations SET name = $1, location_id = $2, availability = $3 WHERE id = $4 RETURNING *",
-    );
-
-    let name = body.name.clone().unwrap_or_else(String::new);
-    let location_id = body.location_id.unwrap_or_default();
-    let availability = body.availability.unwrap_or(false);
-
-    let query_result = query_as::<_, ChargingStation>(&query)
-        .bind(name)
-        .bind(location_id)
-        .bind(availability)
-        .bind(id)
-        .fetch_one(&data.db)
-        .await;
-
-    match query_result {
-        Ok(station) => {
-            let station_response = json!({
-                "status": "success",
-                "data": json!({
-                    "station": station
-                })
-            });
-            return Ok((StatusCode::OK, Json(station_response)));
-        }
-        Err(err) => {
-            let error_response = json!({
-                "status": "error",
-                "message": format!("{:?}", err)
-            });
-
-            return Err((StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)));
-        }
     }
 }
 
