@@ -1,9 +1,9 @@
 import { Formik, Field, Form } from 'formik';
 import './AddStationForm.css';
-import { ChargingStationLocation, StationResponse, addStation } from '../api';
-import { toast } from 'react-toastify';
-import React from 'react';
+import { ChargingStationLocation, addStation } from '../api';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import CustomNotification from '../notification/CustomNotification';
 
 interface AddStationFormProps {
   onClose: () => void;
@@ -12,6 +12,7 @@ interface AddStationFormProps {
 
 const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations }) => {
   const navigate = useNavigate();
+  const [showNotification, setShowNotification] = useState(false);
   
   return (
     <div className="add-station-form-modal">
@@ -23,23 +24,17 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations }) =
             location_id: '',
             availability: true,
           }}
-          onSubmit={async (values, actions) => {
+          onSubmit={(values, { setSubmitting }) => {
             const locationId = parseInt(values.location_id, 10);
-            try {
-              const response: StationResponse = await addStation({
+            addStation({
                 name: values.name,
                 location_id: locationId,
                 availability: values.availability,
               });
-              actions.resetForm();
+              setSubmitting(false);
               onClose();
               navigate('/');
-              console.log('Added station:', response.data.station);
-              toast.success('Station added successfully!');
-            } catch (error) {
-              console.error('Error adding station:', error);
-              toast.error('Error adding station.');
-            }
+              setShowNotification(true); 
           }}
         >
           {({ values, handleChange, handleSubmit }) => (
@@ -105,6 +100,7 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations }) =
             </Form>
           )}
         </Formik>
+        {showNotification && <CustomNotification message="Station added successfully!" />}
       </div>
     </div>
   );
