@@ -40,7 +40,7 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations }) =
           }}
         >
           {({ values, handleChange, handleSubmit }) => (
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit= {handleSubmit}>
               <div className="add-station-form__field">
                 <label className="add-station-form__label">Name:</label>
                 <Field
