@@ -1,27 +1,15 @@
-import React, { useEffect, useState } from 'react';
 import { Formik, Field, Form } from 'formik';
 import './AddStationForm.css';
-import { ChargingStationLocation, StationResponse, addStation, getAllLocations } from '../api';
+import { ChargingStationLocation, StationResponse, addStation } from '../api';
 import { toast } from 'react-toastify';
+import React from 'react';
 
 interface AddStationFormProps {
   onClose: () => void;
+  locations: ChargingStationLocation[];
 }
 
-const AddStationForm: React.FC<AddStationFormProps> = ({ onClose }) => {
-  const [locations, setLocations] = useState<ChargingStationLocation[]>([]);
-
-  useEffect(() => {
-    async function fetchLocations() {
-      try {
-        const fetchedLocations = await getAllLocations();
-        setLocations(fetchedLocations);
-      } catch (error) {
-        console.error('Error fetching locations:', error);
-      }
-    }
-    fetchLocations();
-  }, []);
+const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations }) => {
 
   return (
     <div className="add-station-form-modal">

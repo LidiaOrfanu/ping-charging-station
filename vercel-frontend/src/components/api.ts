@@ -39,6 +39,12 @@ export interface UpdateStationResponse {
   availability: boolean;
 }
 
+export async function getAllStations(): Promise<ChargingStation[]> {
+  const response = await fetch(`${API_BASE_URL}/stations`);
+  const data = await response.json();
+  return data;
+}
+
 export async function updateStationName(
   stationId: number,
   updateData: UpdateStationNameRequest

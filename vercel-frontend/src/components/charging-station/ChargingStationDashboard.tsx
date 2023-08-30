@@ -1,7 +1,7 @@
   import React, { useEffect, useState } from 'react';
   import './ChargingStationDashboard.css';
   import AddStationForm from '../station-form/AddStationForm';
-import { ChargingStation, ChargingStationLocation, getAllLocations } from '../api';
+import { ChargingStation, ChargingStationLocation, getAllLocations, getAllStations } from '../api';
 import { Link } from 'react-router-dom';
 
   function ChargingStationDashboard() {
@@ -18,10 +18,10 @@ import { Link } from 'react-router-dom';
     };
 
     useEffect(() => {
-      fetch('https://ping-charging-station.shuttleapp.rs/api/stations')
-        .then(response => response.json())
-        .then(data => setStations(data))
-        .catch(error => console.error('Error fetching data:', error));
+
+      getAllStations()
+      .then(data => setStations(data))
+      .catch(error => console.error('Error fetching stations:', error));
 
         getAllLocations()
         .then(data => setLocations(data))
@@ -60,7 +60,7 @@ import { Link } from 'react-router-dom';
         </div>
         {showAddForm && (
           <div className="modal">
-            <AddStationForm onClose={handleCloseAddForm} />
+            <AddStationForm onClose={handleCloseAddForm} locations={locations}/>
           </div>
         )}
       </div>
