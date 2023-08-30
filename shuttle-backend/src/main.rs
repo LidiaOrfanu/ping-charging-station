@@ -35,7 +35,8 @@ pub async fn axum(
         .await
     {
         Ok(pool) => pool,
-        Err(_err) => {
+        Err(err) => {
+            eprintln!("Error creating database connection pool: {:?}", err);
             std::process::exit(1);
         }
     };

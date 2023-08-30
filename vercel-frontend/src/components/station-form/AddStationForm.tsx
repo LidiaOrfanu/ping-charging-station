@@ -3,6 +3,7 @@ import './AddStationForm.css';
 import { ChargingStationLocation, StationResponse, addStation } from '../api';
 import { toast } from 'react-toastify';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface AddStationFormProps {
   onClose: () => void;
@@ -10,7 +11,8 @@ interface AddStationFormProps {
 }
 
 const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations }) => {
-
+  const navigate = useNavigate();
+  
   return (
     <div className="add-station-form-modal">
       <div className="add-station-form">
@@ -31,6 +33,7 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations }) =
               });
               actions.resetForm();
               onClose();
+              navigate('/');
               console.log('Added station:', response.data.station);
               toast.success('Station added successfully!');
             } catch (error) {
