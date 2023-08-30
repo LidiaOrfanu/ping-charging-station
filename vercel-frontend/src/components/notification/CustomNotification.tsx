@@ -11,7 +11,7 @@ const CustomNotification: React.FC<CustomNotificationProps> = ({ message }) => {
     setShow(true);
     const timer = setTimeout(() => {
       setShow(false);
-    }, 3000);
+    }, 15000);
 
     return () => clearTimeout(timer);
   }, []);
