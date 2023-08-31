@@ -30,7 +30,7 @@ pub async fn axum(
     let database_url = Db { secret };
 
     let pool = match PgPoolOptions::new()
-        .max_connections(10)
+        .max_connections(20)
         .connect(&database_url.secret)
         .await
     {

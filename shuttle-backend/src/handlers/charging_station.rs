@@ -96,18 +96,18 @@ pub async fn handle_post_a_station(
 
     match query_result {
         Ok(station) => {
-            // let station_response = json!({
-            //     "status": "success",
-            //     "data": {
-            //         "station": {
-            //             "id": station.id,
-            //             "name": station.name,
-            //             "location_id": station.location_id,
-            //             "availability": station.availability
-            //         }
-            //     }
-            // });
-            return Ok((StatusCode::CREATED, Json(station)));
+            let station_response = json!({
+                "status": "success",
+                "data": {
+                    "station": {
+                        "id": station.id,
+                        "name": station.name,
+                        "location_id": station.location_id,
+                        "availability": station.availability
+                    }
+                }
+            });
+            return Ok((StatusCode::CREATED, Json(station_response)));
         }
         Err(e) => {
             if e.to_string()
