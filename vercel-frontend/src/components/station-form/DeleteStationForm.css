@@ -1,4 +1,4 @@
-.add-station-box {
+.delete-station-box {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,7 +6,7 @@
     background-color: #f0f0f0;
   }
   
-  .add-station-form {
+  .delete-station-form {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,33 +20,33 @@
     margin: auto;
   }
   
-  .add-station-form__field {
+  .delete-station-form__field {
     display: flex;
     align-items: center;
     margin: 10px 15px 25px;
   }  
   
-  .add-station-form__label {
+  .delete-station-form__label {
     padding-right: 10px; 
   }
 
-  .add-station-form__radio-group {
+  .delete-station-form__radio-group {
     display: flex;
     gap: 10px;
   }
 
-.add-station-form__input,
-.add-station-form__radio-group {
+.delete-station-form__input,
+.delete-station-form__radio-group {
   flex: 3;
 }
 
-.add-station-form__button-group {
+.delete-station-form__button-group {
     display: flex;
     justify-content: center;
     margin-top: 20px;
   }
   
-  .add-station-form__submit-button, .add-station-form__close-button {
+  .delete-station-form__submit-button, .delete-station-form__close-button {
     flex: 1;
     margin: 0 5px;
     height: 25px;
@@ -57,12 +57,12 @@
     text-align: center;
   }
   
-  .add-station-form__submit-button{
+  .delete-station-form__submit-button{
     background-color: #0ab3ba;
     color: white;
   }
   
-  .add-station-form__close-button {
+  .delete-station-form__close-button {
     background-color: #ff5e5b;
     color: white; 
   }

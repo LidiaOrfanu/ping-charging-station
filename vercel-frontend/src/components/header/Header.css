@@ -3,16 +3,36 @@
     color: white;
     padding: 10px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-  }
-  
-  .header__logo {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-  }
+    flex-direction: column; 
+    }
   
   .logo {
-    max-width: 150px;
+    max-width: 200px;
+  }
+
+  .add-button,
+  .edit-button,
+  .delete-button {
+    background-color: #01809a;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: auto 5px;
+    transition: background-color 0.3s;
+  }
+
+  .add-button:hover {
+    background-color: #0ab3ba;
+  }
+
+  .edit-button:hover {
+    background-color: #015668;
+  }
+  
+  .delete-button:hover {
+    background-color: #ff5e5b;
   }

@@ -98,3 +98,21 @@ export async function getStationByID(
   const response = await axios.get(`${API_BASE_URL}/station/${stationId}`);
   return response.data.data.station as ChargingStation;
 }
+
+export async function deleteStationById(stationId: number): Promise<void> {
+  const apiUrl = `https://ping-charging-station.shuttleapp.rs/api/station/${stationId}`;
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      // Handle error response here
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to delete station');
+    }
+  } catch (error) {
+    throw new Error('Failed to delete station');
+  }
+}

@@ -5,11 +5,11 @@
   margin-bottom: 20px;
 }
 
-.station-title {
+/* .station-title {
   font-size: 24px;
   margin: 15px;
   padding: 5px 10px;
-}
+} */
 
 .station-list {
   font-family: Arial, sans-serif;
@@ -62,11 +62,11 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.add-station-button {
+/* .add-station-button {
   background-color: #01809a;
   color: white;
   padding: 10px 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
+} */
