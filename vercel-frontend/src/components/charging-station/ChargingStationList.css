@@ -34,9 +34,8 @@ body {
   
   .available, .not-available {
     display: inline;
-    margin-right: 20px;
-    color: black;
-    font-weight: bold;  
+    margin-right: 130px;
+    color: white;
     background-color: transparent;
     padding: 0;
   }
