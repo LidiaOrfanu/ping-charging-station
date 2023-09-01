@@ -37,7 +37,7 @@ import DeleteStationForm from '../station-form/DeleteStationForm';
         })
         .catch(error => {
           console.error('Error deleting station:', error);
-          // Handle the error, e.g., show a notification to the user
+          // show a notification to the user ???
         });
         setShowDeleteForm(false);
       }
