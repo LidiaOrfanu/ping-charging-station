@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ChargingStation } from '../api';
 import './DeleteStationForm.css';
+import CustomNotification from '../notification/CustomNotification';
 interface DeleteStationFormProps {
   stations: ChargingStation[];
   selectedStation: number | null;
@@ -16,6 +17,18 @@ const DeleteStationForm: React.FC<DeleteStationFormProps> = ({
   onDeleteStationClick,
   onClose,
 }) => {
+      const [showNotification, setShowNotification] = useState(false);
+        const handleDeleteStationClick = () => {
+    if (selectedStation !== null) {
+      onDeleteStationClick();
+
+      setShowNotification(true);
+
+      setTimeout(() => {
+        setShowNotification(false);
+      }, 3000); 
+    }
+  };
   return (
     <div className="delete-station-form-modal">
       <div className="delete-station-form">
@@ -43,7 +56,7 @@ const DeleteStationForm: React.FC<DeleteStationFormProps> = ({
           <div className="delete-station-form__button-group">
             <button
               type="button"
-              onClick={onDeleteStationClick}
+              onClick={handleDeleteStationClick}
               className="delete-station-form__submit-button"
               disabled={selectedStation === null}
             >
@@ -58,6 +71,7 @@ const DeleteStationForm: React.FC<DeleteStationFormProps> = ({
             </button>
           </div>
         </form>
+        {showNotification && <CustomNotification message="Station added successfully!" />}
       </div>
     </div>
   );

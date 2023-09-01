@@ -28,7 +28,6 @@ import DeleteStationForm from '../station-form/DeleteStationForm';
       if (selectedStation !== null) {
         deleteStationById(selectedStation)
         .then(() => {
-          // refresh the station list
           getAllStations()
           .then(data => setStations(data))
           .catch(error => console.error('Error fetching stations:', error));
