@@ -1,0 +1,61 @@
+  .add-station-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #01809a;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 450px;
+    margin: auto;
+  }
+  
+  .add-station-form__field {
+    display: flex;
+    align-items: center;
+    margin: 10px 15px 25px;
+  }  
+  
+  .add-station-form__label {
+    padding-right: 10px; 
+  }
+
+  .add-station-form__radio-group {
+    display: flex;
+    gap: 10px;
+  }
+
+.add-station-form__input,
+.add-station-form__radio-group {
+  flex: 3;
+}
+
+.add-station-form__button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .add-station-form__submit-button, .add-station-form__close-button {
+    flex: 1;
+    margin: 0 5px;
+    height: 25px;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    /* font-weight: bold; */
+    text-align: center;
+  }
+  
+  .add-station-form__submit-button{
+    background-color: #0ab3ba;
+    color: white;
+  }
+  
+  .add-station-form__close-button {
+    background-color: #ff5e5b;
+    color: white; 
+  }
+  

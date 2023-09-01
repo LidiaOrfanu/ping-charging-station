@@ -2,9 +2,9 @@
   import './ChargingStationDashboard.css';
   import { ChargingStation, ChargingStationLocation, deleteStationById, getAllLocations, getAllStations } from '../api';
   import Header from '../header/Header';
-  import DeleteStationForm from '../station-form/DeleteStationForm';
+  import DeleteStationForm from '../station-form/DeleteStation';
   import ChargingStationList from './ChargingStationList';
-import AddStationForm from '../station-form/AddStationForm';
+import AddStationForm from '../station-form/AddStation';
 
   function ChargingStationDashboard() {
     const [stations, setStations] = useState<ChargingStation[]>([]);

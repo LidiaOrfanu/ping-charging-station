@@ -1,5 +1,5 @@
 import { Formik, Field, Form } from 'formik';
-import './AddStationForm.css';
+import './AddStation.css';
 import { ChargingStation, ChargingStationLocation, addStation, getAllStations } from '../api';
 import React, { useState } from 'react';
 import CustomNotification from '../notification/CustomNotification';

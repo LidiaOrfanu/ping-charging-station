@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChargingStation } from '../api';
-import './DeleteStationForm.css';
+import './DeleteStation.css';
 import CustomNotification from '../notification/CustomNotification';
 interface DeleteStationFormProps {
   stations: ChargingStation[];
