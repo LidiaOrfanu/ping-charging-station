@@ -34,9 +34,10 @@ body {
   }
   
   .available, .not-available {
-    display: inline-block;
-    padding: 5px;
-    width: auto;
+    display: inline;
+    margin-right: 10px;
+    background-color: transparent;
+    padding: 0;
   }
 
   .available {
