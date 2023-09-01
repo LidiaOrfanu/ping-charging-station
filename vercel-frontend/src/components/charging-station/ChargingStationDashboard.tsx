@@ -5,13 +5,15 @@
   import DeleteStationForm from '../station-form/DeleteStation';
   import ChargingStationList from './ChargingStationList';
 import AddStationForm from '../station-form/AddStation';
+import AddLocation from '../location-form/AddLocation';
 
   function ChargingStationDashboard() {
     const [stations, setStations] = useState<ChargingStation[]>([]);
     const [locations, setLocations] = useState<ChargingStationLocation[]>([]);
-    const [showAddForm, setShowAddForm] = useState(false);
+    const [showAddStationForm, setShowAddStationForm] = useState(false);
     const [selectedStation, setSelectedStation] = useState<number | null>(null); 
-    const [showDeleteForm, setShowDeleteForm] = useState(false);
+    const [showDeleteStationForm, setShowDeleteStationForm] = useState(false);
+    const [showAddLocationForm, setShowAddLocationForm] = useState(false);
 
     const fetchStations = () => {
       getAllStations()
@@ -19,16 +21,20 @@ import AddStationForm from '../station-form/AddStation';
         .catch(error => console.error('Error fetching stations:', error));
     };
     
-    const handleShowAddForm = () => {
-      setShowAddForm(true);
+    const handleShowAddStationForm = () => {
+      setShowAddStationForm(true);
+    };
+    const handleShowAddLocationForm = () => {
+      setShowAddLocationForm(true);
     };
 
     const handleShowDeleteForm = () => {
-      setShowDeleteForm(true);
+      setShowDeleteStationForm(true);
     };
 
     const handleCloseAddForm = () => {
-      setShowAddForm(false);
+      setShowAddStationForm(false);
+      setShowAddLocationForm(false)
     };
 
     const handleDeleteStationClick = () => {
@@ -36,14 +42,15 @@ import AddStationForm from '../station-form/AddStation';
         deleteStationById(selectedStation)
         .then(() => {
           fetchStations();
-        setShowDeleteForm(false);
+        setShowDeleteStationForm(false);
         })
         .catch(error => {
           console.error('Error deleting station:', error);
         });
-        setShowDeleteForm(false);
+        setShowDeleteStationForm(false);
       }
     };
+
     useEffect(() => {
       fetchStations();
 
@@ -54,17 +61,22 @@ import AddStationForm from '../station-form/AddStation';
 
     return (
       <div>
-        <Header onAddStationClick={handleShowAddForm} onDeleteStationClick={handleShowDeleteForm}/>
+        <Header onAddStationClick={handleShowAddStationForm} 
+                onDeleteStationClick={handleShowDeleteForm}
+                onAddLocationClick={handleShowAddLocationForm} />
         <ChargingStationList stations={stations} locations={locations} /> 
-        {(showAddForm || showDeleteForm) && (
+        {(showAddStationForm || showDeleteStationForm || showAddLocationForm) && (
           <div className="modal">
-          {showAddForm && (
+          {showAddStationForm && (
               <AddStationForm onClose={handleCloseAddForm} locations={locations} setStations={setStations}/>
           )}
-          {showDeleteForm && (
+          {showAddStationForm && (
+              <AddLocation onClose={handleCloseAddForm} />
+          )}
+          {showDeleteStationForm && (
             <DeleteStationForm
               onClose={() => {
-                setShowDeleteForm(false);
+                setShowDeleteStationForm(false);
                 setSelectedStation(null);
               }}
               stations={stations}

@@ -16,19 +16,19 @@ const DeleteStationForm: React.FC<DeleteStationFormProps> = ({
   onStationChange,
   onDeleteStationClick,
   onClose,
-}) => {
+  }) => {
       const [showNotification, setShowNotification] = useState(false);
-        const handleDeleteStationClick = () => {
-    if (selectedStation !== null) {
-      onDeleteStationClick();
+      const handleDeleteStationClick = () => {
+      if (selectedStation !== null) {
+        onDeleteStationClick();
 
-      setShowNotification(true);
+        setShowNotification(true);
 
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 3000); 
-    }
-  };
+        setTimeout(() => {
+          setShowNotification(false);
+        }, 3000); 
+      }
+    };
   return (
     <div className="delete-station-form-modal">
       <div className="delete-station-form">

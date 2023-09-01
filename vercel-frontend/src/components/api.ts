@@ -39,6 +39,13 @@ export interface UpdateStationResponse {
   availability: boolean;
 }
 
+export interface ChargingStationLocationRequest {
+  street: string;
+  zip: number;
+  city: string;
+  country: string;
+}
+
 export async function getAllStations(): Promise<ChargingStation[]> {
   const response = await fetch(`${API_BASE_URL}/stations`);
   const data = await response.json();
@@ -85,6 +92,24 @@ export async function addStation(stationData: {
 
   return response.json();
 }
+
+export const addLocation = async (locationData: ChargingStationLocationRequest)=> {
+    const response = await axios.post(
+      `${API_BASE_URL}/location`,
+      locationData,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Failed to add location - Status: ${response.status}`);
+    }
+};
 
 export async function getAllLocations(): Promise<ChargingStationLocation[]> {
   const response = await fetch(`${API_BASE_URL}/locations`);
