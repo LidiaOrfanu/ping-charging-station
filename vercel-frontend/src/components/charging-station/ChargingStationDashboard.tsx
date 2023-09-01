@@ -4,6 +4,7 @@
 import { ChargingStation, ChargingStationLocation, deleteStationById, getAllLocations, getAllStations } from '../api';
 import Header from '../header/Header';
 import DeleteStationForm from '../station-form/DeleteStationForm';
+import ChargingStationList from './ChargingStationList';
 
   function ChargingStationDashboard() {
     const [stations, setStations] = useState<ChargingStation[]>([]);
@@ -53,26 +54,7 @@ import DeleteStationForm from '../station-form/DeleteStationForm';
     return (
       <div>
         <Header onAddStationClick={handleShowAddForm} onDeleteStationClick={handleShowDeleteForm}/>
-        <div className="station-list">
-          <div className="station-header">
-            <span className="status">Status</span>
-            <span className="station-name">Station Name</span>
-            <span className="address">Address</span>
-          </div>
-          {stations.map(station => (
-            <div className="station-item" key={station.id}>
-              <span className={`status ${station.availability ? 'available' : 'not-available'}`}>
-                {station.availability ? 'Available' : 'Not Available'}
-              </span>
-              <span className="station-name">{station.name}</span>
-              <span className="address">
-                {locations.find(location => location.id === station.location_id)?.street},{' '}
-                {locations.find(location => location.id === station.location_id)?.city},{' '}
-                {locations.find(location => location.id === station.location_id)?.country}
-              </span>
-            </div>
-          ))}
-        </div>
+        <ChargingStationList stations={stations} locations={locations} /> 
         {(showAddForm || showDeleteForm) && (
           <div className="modal">
           {showAddForm && (
