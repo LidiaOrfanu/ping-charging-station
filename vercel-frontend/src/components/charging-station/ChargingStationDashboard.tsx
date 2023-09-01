@@ -73,6 +73,7 @@ import DeleteStationForm from '../station-form/DeleteStationForm';
             </div>
           ))}
         </div>
+        {(showAddForm || showDeleteForm) && (
           <div className="modal">
           {showAddForm && (
               <AddStationForm onClose={handleCloseAddForm} locations={locations}/>
@@ -90,6 +91,7 @@ import DeleteStationForm from '../station-form/DeleteStationForm';
             />
         )}
         </div>
+        )}
     </div>
     );
   }
