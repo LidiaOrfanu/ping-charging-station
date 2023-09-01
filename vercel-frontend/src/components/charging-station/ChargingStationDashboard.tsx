@@ -41,7 +41,6 @@ import ChargingStationList from './ChargingStationList';
       }
     };
     useEffect(() => {
-
       getAllStations()
       .then(data => setStations(data))
       .catch(error => console.error('Error fetching stations:', error));

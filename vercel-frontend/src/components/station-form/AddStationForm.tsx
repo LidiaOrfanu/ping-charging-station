@@ -13,7 +13,13 @@ interface AddStationFormProps {
 const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations }) => {
   const navigate = useNavigate();
   const [showNotification, setShowNotification] = useState(false);
+  const [availability, setAvailability] = useState(true);
   
+  const handleAvailabilityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newAvailability = e.target.value === 'true';
+    setAvailability(newAvailability);
+  };
+
   return (
     <div className="add-station-form-modal">
       <div className="add-station-form">
@@ -29,7 +35,7 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations }) =
             addStation({
                 name: values.name,
                 location_id: locationId,
-                availability: values.availability,
+                availability: availability,
               });
               setSubmitting(false);
               onClose();
@@ -37,7 +43,7 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations }) =
               setShowNotification(true); 
           }}
         >
-          {({ values, handleChange, handleSubmit }) => (
+          {({ handleSubmit }) => (
             <Form onSubmit= {handleSubmit}>
               <div className="add-station-form__field">
                 <label className="add-station-form__label">Name:</label>
@@ -70,8 +76,8 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations }) =
                       type="radio"
                       name="availability"
                       value="true"
-                      checked={values.availability === true}
-                      onChange={handleChange}
+                      checked={availability === true}
+                      onChange={handleAvailabilityChange}
                       className="add-station-form__radio"
                     />
                     Available
@@ -81,8 +87,8 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations }) =
                       type="radio"
                       name="availability"
                       value="false"
-                      checked={values.availability === false}
-                      onChange={handleChange}
+                      checked={availability === false}
+                      onChange={handleAvailabilityChange}
                       className="add-station-form__radio"
                     />
                     Not Available
