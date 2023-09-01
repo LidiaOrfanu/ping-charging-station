@@ -22,13 +22,8 @@
   padding-right: 10px; 
 }
 
-.add-location-form__radio-group {
-  display: flex;
-  gap: 10px;
-}
 
-.add-location-form__input,
-.add-location-form__radio-group {
+.add-location-form__input {
 flex: 3;
 }
 

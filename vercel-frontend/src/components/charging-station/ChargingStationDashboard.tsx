@@ -75,7 +75,7 @@ import AddLocation from '../location-form/AddLocation';
           {showAddStationForm && (
               <AddStationForm onClose={handleCloseAddForm} locations={locations} setStations={setStations}/>
           )}
-          {showAddStationForm && (
+          {showAddLocationForm && (
               <AddLocation onClose={handleCloseAddLocationForm} />
           )}
           {showDeleteStationForm && (
