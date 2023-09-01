@@ -35,6 +35,8 @@ body {
   .available, .not-available {
     display: inline;
     margin-right: 20px;
+    color: black;
+    font-weight: bold;  
     background-color: transparent;
     padding: 0;
   }
