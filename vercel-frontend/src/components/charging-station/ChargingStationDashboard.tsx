@@ -1,10 +1,10 @@
   import React, { useEffect, useState } from 'react';
   import './ChargingStationDashboard.css';
-  import AddStationForm from '../station-form/AddStationForm';
-import { ChargingStation, ChargingStationLocation, deleteStationById, getAllLocations, getAllStations } from '../api';
-import Header from '../header/Header';
-import DeleteStationForm from '../station-form/DeleteStationForm';
-import ChargingStationList from './ChargingStationList';
+  import { ChargingStation, ChargingStationLocation, deleteStationById, getAllLocations, getAllStations } from '../api';
+  import Header from '../header/Header';
+  import DeleteStationForm from '../station-form/DeleteStationForm';
+  import ChargingStationList from './ChargingStationList';
+import AddStationForm from '../station-form/AddStationForm';
 
   function ChargingStationDashboard() {
     const [stations, setStations] = useState<ChargingStation[]>([]);
@@ -13,6 +13,12 @@ import ChargingStationList from './ChargingStationList';
     const [selectedStation, setSelectedStation] = useState<number | null>(null); 
     const [showDeleteForm, setShowDeleteForm] = useState(false);
 
+    const fetchStations = () => {
+      getAllStations()
+        .then(data => setStations(data))
+        .catch(error => console.error('Error fetching stations:', error));
+    };
+    
     const handleShowAddForm = () => {
       setShowAddForm(true);
     };
@@ -29,9 +35,7 @@ import ChargingStationList from './ChargingStationList';
       if (selectedStation !== null) {
         deleteStationById(selectedStation)
         .then(() => {
-          getAllStations()
-          .then(data => setStations(data))
-          .catch(error => console.error('Error fetching stations:', error));
+          fetchStations();
         setShowDeleteForm(false);
         })
         .catch(error => {
@@ -41,9 +45,7 @@ import ChargingStationList from './ChargingStationList';
       }
     };
     useEffect(() => {
-      getAllStations()
-      .then(data => setStations(data))
-      .catch(error => console.error('Error fetching stations:', error));
+      fetchStations();
 
         getAllLocations()
         .then(data => setLocations(data))
@@ -57,7 +59,7 @@ import ChargingStationList from './ChargingStationList';
         {(showAddForm || showDeleteForm) && (
           <div className="modal">
           {showAddForm && (
-              <AddStationForm onClose={handleCloseAddForm} locations={locations}/>
+              <AddStationForm onClose={handleCloseAddForm} locations={locations} setStations={setStations}/>
           )}
           {showDeleteForm && (
             <DeleteStationForm

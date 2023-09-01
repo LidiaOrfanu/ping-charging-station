@@ -1,17 +1,16 @@
 import { Formik, Field, Form } from 'formik';
 import './AddStationForm.css';
-import { ChargingStationLocation, addStation } from '../api';
+import { ChargingStation, ChargingStationLocation, addStation, getAllStations } from '../api';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import CustomNotification from '../notification/CustomNotification';
 
 interface AddStationFormProps {
   onClose: () => void;
   locations: ChargingStationLocation[];
+  setStations: React.Dispatch<React.SetStateAction<ChargingStation[]>>;
 }
 
-const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations }) => {
-  const navigate = useNavigate();
+const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations , setStations}) => {
   const [showNotification, setShowNotification] = useState(false);
   const [availability, setAvailability] = useState(true);
   
@@ -36,12 +35,27 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations }) =
                 name: values.name,
                 location_id: locationId,
                 availability: availability,
+              })
+              .then(() => {
+                // Fetch the latest list of stations after adding a new station
+                getAllStations()
+                  .then(data => {
+                    // Update the state with the new list of stations
+                    setStations(data);
+                    setSubmitting(false);
+                    onClose();
+                    setShowNotification(true);
+                  })
+                  .catch(error => {
+                    console.error('Error fetching stations:', error);
+                    setSubmitting(false);
+                  });
+              })
+              .catch(error => {
+                console.error('Error adding station:', error);
+                setSubmitting(false);
               });
-              setSubmitting(false);
-              onClose();
-              navigate('/');
-              setShowNotification(true); 
-          }}
+            }}
         >
           {({ handleSubmit }) => (
             <Form onSubmit= {handleSubmit}>
