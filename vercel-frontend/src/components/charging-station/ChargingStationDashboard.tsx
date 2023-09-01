@@ -2,7 +2,6 @@
   import './ChargingStationDashboard.css';
   import AddStationForm from '../station-form/AddStationForm';
 import { ChargingStation, ChargingStationLocation, deleteStationById, getAllLocations, getAllStations } from '../api';
-import { Link } from 'react-router-dom';
 import Header from '../header/Header';
 import DeleteStationForm from '../station-form/DeleteStationForm';
 
@@ -37,7 +36,6 @@ import DeleteStationForm from '../station-form/DeleteStationForm';
         })
         .catch(error => {
           console.error('Error deleting station:', error);
-          // show a notification to the user ???
         });
         setShowDeleteForm(false);
       }
@@ -63,7 +61,6 @@ import DeleteStationForm from '../station-form/DeleteStationForm';
             <span className="address">Address</span>
           </div>
           {stations.map(station => (
-             <Link key={station.id} to={`/station/${station.id}`}>
             <div className="station-item" key={station.id}>
               <span className={`status ${station.availability ? 'available' : 'not-available'}`}>
                 {station.availability ? 'Available' : 'Not Available'}
@@ -75,28 +72,25 @@ import DeleteStationForm from '../station-form/DeleteStationForm';
                 {locations.find(location => location.id === station.location_id)?.country}
               </span>
             </div>
-            </Link>
           ))}
         </div>
-        {showAddForm && (
           <div className="modal">
-            <AddStationForm onClose={handleCloseAddForm} locations={locations}/>
-          </div>
+          {showAddForm && (
+              <AddStationForm onClose={handleCloseAddForm} locations={locations}/>
+          )}
+          {showDeleteForm && (
+            <DeleteStationForm
+              onClose={() => {
+                setShowDeleteForm(false);
+                setSelectedStation(null);
+              }}
+              stations={stations}
+              selectedStation={selectedStation}
+              onStationChange={(value) => setSelectedStation(value)}
+              onDeleteStationClick={handleDeleteStationClick}
+            />
         )}
-      {showDeleteForm && (
-        <div className="modal">
-          <DeleteStationForm
-            onClose={() => {
-              setShowDeleteForm(false);
-              setSelectedStation(null); // reset selectedStation when the form is closed
-            }}
-            stations={stations}
-            selectedStation={selectedStation}
-            onStationChange={(value) => setSelectedStation(value)}
-            onDeleteStationClick={handleDeleteStationClick}
-          />
         </div>
-      )}
     </div>
     );
   }

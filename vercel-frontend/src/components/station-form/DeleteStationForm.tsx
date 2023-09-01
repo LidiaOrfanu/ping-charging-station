@@ -2,11 +2,11 @@ import React from 'react';
 import { ChargingStation } from '../api';
 import './DeleteStationForm.css';
 interface DeleteStationFormProps {
-  stations: ChargingStation[]; // An array of stations to choose from
-  selectedStation: number | null; // The selected station to delete
-  onStationChange: (value: number | null) => void; // Callback when a station is selected
-  onDeleteStationClick: () => void; // Callback when the delete button is clicked
-  onClose: () => void; // Callback when the form is closed
+  stations: ChargingStation[];
+  selectedStation: number | null;
+  onStationChange: (value: number | null) => void;
+  onDeleteStationClick: () => void;
+  onClose: () => void;
 }
 
 const DeleteStationForm: React.FC<DeleteStationFormProps> = ({
