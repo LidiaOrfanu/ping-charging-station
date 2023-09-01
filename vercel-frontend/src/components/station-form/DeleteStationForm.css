@@ -1,11 +1,3 @@
-.delete-station-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-  }
-  
   .delete-station-form {
     display: flex;
     flex-direction: column;
@@ -30,13 +22,7 @@
     padding-right: 10px; 
   }
 
-  .delete-station-form__radio-group {
-    display: flex;
-    gap: 10px;
-  }
-
-.delete-station-form__input,
-.delete-station-form__radio-group {
+.delete-station-form__input {
   flex: 3;
 }
 
