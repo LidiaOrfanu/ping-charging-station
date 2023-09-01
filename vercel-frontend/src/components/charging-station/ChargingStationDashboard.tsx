@@ -26,6 +26,7 @@ import AddLocation from '../location-form/AddLocation';
     };
     const handleShowAddLocationForm = () => {
       setShowAddLocationForm(true);
+      console.log('Add Location button clicked');
     };
 
     const handleShowDeleteForm = () => {
@@ -34,6 +35,10 @@ import AddLocation from '../location-form/AddLocation';
 
     const handleCloseAddForm = () => {
       setShowAddStationForm(false);
+      setShowAddLocationForm(false)
+    };
+
+    const handleCloseAddLocationForm = () => {
       setShowAddLocationForm(false)
     };
 
@@ -71,7 +76,7 @@ import AddLocation from '../location-form/AddLocation';
               <AddStationForm onClose={handleCloseAddForm} locations={locations} setStations={setStations}/>
           )}
           {showAddStationForm && (
-              <AddLocation onClose={handleCloseAddForm} />
+              <AddLocation onClose={handleCloseAddLocationForm} />
           )}
           {showDeleteStationForm && (
             <DeleteStationForm
