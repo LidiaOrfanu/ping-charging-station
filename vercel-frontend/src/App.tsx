@@ -12,7 +12,6 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<ChargingStationDashboard />} />
         <Route path="/station/:id" element={<ChargingStationPage />} />
-        {/* <Route path="/search-results" element={<ChargingStationPage />} /> */}
         <Route path="/not-found" element={<PageNotFound />} />
       </Routes>
       {/* <Footer /> */}

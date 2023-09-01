@@ -16,10 +16,3 @@
   .logo {
     max-width: 150px;
   }
-  
-  .header-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1; 
-  }
