@@ -8,7 +8,7 @@ body {
     font-family: Arial, sans-serif; 
     border: 2px solid #ddd;
     border-radius: 5px;
-    background-color: black;
+    background-color: #f9f9f9;
   }
   
   .station-header {
@@ -31,6 +31,7 @@ body {
     border: 1px solid #ccc;
     border-radius: 5px;
     color: white;
+    background-color: black;
   }
   
   .available {
