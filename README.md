@@ -69,8 +69,16 @@ Response:
  "availability": true
 }
 
-sqlx migrations add 'name of migrations'
+sqlx migrate add 'name of migrations'
 sqlx migrate run --database-url "conn-url"
 psql "connection_url"
 DEALLOCATE ALL; for issues with migrations statements
 \q to quit
+
+Example how to run migrations:
+sqlx migrate add create_stations
+Creating migrations/20230904122550_create_stations.sql
+Add migration script in the newly created file
+sqlx migrate run --database-url "conn-url"
+Applied 20230904122550/migrate create stations (126.488125ms)
+revert --database-url "conn-url" --version 20230904122550
