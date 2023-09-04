@@ -19,9 +19,11 @@ const AddLocation: React.FC<AddLocationFormProps> = ({ onClose }) => {
     <div className="add-location-form">
        <h2 className="add-location-form__title">Add a new location:</h2>
       <Formik initialValues={initialValues} 
-              onSubmit={(values, { setSubmitting }) => {
-                setSubmitting(false);
-                addLocation(values as ChargingStationLocationRequest)
+              onSubmit={async (values, { setSubmitting, resetForm }) => {
+                setSubmitting(true);
+                await addLocation(values as ChargingStationLocationRequest)
+                resetForm();
+                onClose();
               }}
               // validationSchema={validationSchema}
             >
