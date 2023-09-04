@@ -36,7 +36,7 @@ const AddLocation: React.FC<AddLocationFormProps> = ({ onClose }) => {
               </div>
               <div className="add-location-form__field">
                 <label className="add-location-form__label">Zip code:</label>
-                <Field type="text"
+                <Field type="number"
                       name="zip"
                       className="add-location-form__input"
                       required />
