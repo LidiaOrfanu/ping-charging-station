@@ -71,6 +71,7 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
     };
 
     const handleDeleteLocationClick = () => {
+      console.log('handleDeleteLocationClick function called');
         if (selectedStation !== null) {
           deleteLocationById(selectedStation)
           .then(() => {

@@ -69,6 +69,7 @@ Response:
  "availability": true
 }
 
+sqlx migrations add 'name of migrations'
 sqlx migrate run --database-url "conn-url"
 psql "connection_url"
 DEALLOCATE ALL; for issues with migrations statements
