@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import './AddLocation.css';
 import { ChargingStationLocation, ChargingStationLocationRequest, addLocation, getAllLocations } from '../api';
-import CustomNotification from '../notification/CustomNotification';
 
 interface AddLocationFormProps {
   onClose: () => void;
@@ -10,7 +9,6 @@ interface AddLocationFormProps {
 }
 
 const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, setLocations }) => {
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const initialValues = {
     street: '',
     zip: 0,
@@ -29,9 +27,8 @@ const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, setLocations
                   getAllLocations()
                     .then(data => {
                       setLocations(data);
-                      // setSubmitting(false);
-                      setShowSuccessMessage(true);
-                        // onClose();
+                      setSubmitting(false);
+                        onClose();
                     })
                     .catch(error => {
                       console.error('Error fetching locations:', error);
@@ -46,7 +43,6 @@ const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, setLocations
             >
       {({ handleSubmit }) => (
             <Form onSubmit= {handleSubmit}>
-              {showSuccessMessage && <CustomNotification message="Successfully added a new location!" />}
               <div className="add-location-form__field">
                 <label className="add-location-form__label">Street:</label>
                 <Field type="text"

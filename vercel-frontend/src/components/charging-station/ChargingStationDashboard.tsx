@@ -48,8 +48,8 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
     };
 
     const handleDeleteLocationClick = () => {
-        if (selectedStation !== null) {
-          deleteLocationById(selectedStation)
+        if (selectedLocation !== null) {
+          deleteLocationById(selectedLocation)
           .then(() => {
             fetchLocations();
           })

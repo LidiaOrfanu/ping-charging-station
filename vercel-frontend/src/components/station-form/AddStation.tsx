@@ -2,7 +2,6 @@ import { Formik, Field, Form } from 'formik';
 import './AddStation.css';
 import { ChargingStation, ChargingStationLocation, addStation, getAllStations } from '../api';
 import React, { useState } from 'react';
-import CustomNotification from '../notification/CustomNotification';
 
 interface AddStationFormProps {
   onClose: () => void;
@@ -11,7 +10,6 @@ interface AddStationFormProps {
 }
 
 const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations , setStations}) => {
-  const [showNotification, setShowNotification] = useState(false);
   const [availability, setAvailability] = useState(true);
   
   const handleAvailabilityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,14 +36,11 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations , se
                 availability: availability,
               })
               .then(() => {
-                // Fetch the latest list of stations after adding a new station
                 getAllStations()
                   .then(data => {
-                    // Update the state with the new list of stations
                     setStations(data);
                     setSubmitting(false);
                     onClose();
-                    setShowNotification(true);
                   })
                   .catch(error => {
                     console.error('Error fetching stations:', error);
@@ -121,7 +116,6 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations , se
             </Form>
           )}
         </Formik>
-        {showNotification && <CustomNotification message="Station added successfully!" />}
       </div>
     </div>
   );
