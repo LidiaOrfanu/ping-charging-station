@@ -22,9 +22,15 @@ function ChargingStationList({ stations, locations }: StationListProps) {
           </span>
           <span className="station-name">{station.name}</span>
           <span className="address">
+          {station.location_id !== null ? (
+            <>
             {locations.find(location => location.id === station.location_id)?.street},{' '}
             {locations.find(location => location.id === station.location_id)?.city},{' '}
             {locations.find(location => location.id === station.location_id)?.country}
+            </>
+          ) : (
+            "No Location Assigned"
+          )}
           </span>
         </div>
       ))}
