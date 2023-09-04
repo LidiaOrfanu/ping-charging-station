@@ -10,8 +10,7 @@ interface AddLocationFormProps {
 }
 
 const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, setLocations }) => {
-  const [showNotification, setShowNotification] = useState(false);
-
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const initialValues = {
     street: '',
     zip: 0,
@@ -29,14 +28,10 @@ const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, setLocations
                 .then(() => {
                   getAllLocations()
                     .then(data => {
-                      // Update the state with the new list of locations
                       setLocations(data);
                       setSubmitting(false);
-                      setShowNotification(true);
-                      // setTimeout(() => {
-                        // setShowNotification(false);
+                      setShowSuccessMessage(true);
                         onClose();
-                      // }, 1000);
                     })
                     .catch(error => {
                       console.error('Error fetching locations:', error);
@@ -51,6 +46,7 @@ const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, setLocations
             >
       {({ handleSubmit }) => (
             <Form onSubmit= {handleSubmit}>
+              {showSuccessMessage && <CustomNotification message="Successfully added a new location!" />}
               <div className="add-location-form__field">
                 <label className="add-location-form__label">Street:</label>
                 <Field type="text"
@@ -90,7 +86,6 @@ const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, setLocations
             </Form>
       )}
       </Formik>
-      {showNotification && <CustomNotification message="Location added successfully!" />}
     </div>
   );
 };

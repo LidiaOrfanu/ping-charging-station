@@ -11,12 +11,8 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
   function ChargingStationDashboard() {
     const [stations, setStations] = useState<ChargingStation[]>([]);
     const [locations, setLocations] = useState<ChargingStationLocation[]>([]);
-    // const [showAddStationForm, setShowAddStationForm] = useState(false);
     const [selectedStation, setSelectedStation] = useState<number | null>(null); 
     const [selectedLocation, setSelectedLocation] = useState<number | null>(null); 
-    // const [showDeleteStationForm, setShowDeleteStationForm] = useState(false);
-    // const [showDeleteLocationForm, setShowDeleteLocationForm] = useState(false);
-    // const [showAddLocationForm, setShowAddLocationForm] = useState(false);
     const [formMode, setFormMode] = useState<'addStation' | 'addLocation' | 'deleteStation' | 'deleteLocation' | null>(null);
    
     const fetchStations = () => {
@@ -44,27 +40,22 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
         deleteStationById(selectedStation)
         .then(() => {
           fetchStations();
-        // setShowDeleteStationForm(false);
         })
         .catch(error => {
           console.error('Error deleting station:', error);
         });
-        // setShowDeleteStationForm(false);
       }
     };
 
     const handleDeleteLocationClick = () => {
-      console.log('handleDeleteLocationClick function called');
         if (selectedStation !== null) {
           deleteLocationById(selectedStation)
           .then(() => {
             fetchLocations();
-          // setShowDeleteLocationForm(false);
           })
           .catch(error => {
             console.error('Error deleting location:', error);
           });
-          // setShowDeleteLocationForm(false);
         }
       };
   
