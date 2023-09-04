@@ -10,7 +10,7 @@ pub struct ChargingStation {
 
 #[derive(Debug, Deserialize, Serialize, sqlx::FromRow, Validate)]
 pub struct CreateChargingStation {
-    #[validate(length(min = 3, max = 15))]
+    #[validate(length(min = 3, max = 35))]
     pub name: String,
     pub location_id: i32,
     pub availability: bool,

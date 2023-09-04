@@ -13,7 +13,7 @@ pub struct Location {
 
 #[derive(Debug, Deserialize, Serialize, sqlx::FromRow, Validate)]
 pub struct CreateLocation {
-    #[validate(length(min = 3, max = 15))]
+    #[validate(length(min = 3, max = 35))]
     pub street: String,
     pub zip: i32,
     #[validate(length(min = 3, max = 15))]
