@@ -4,7 +4,7 @@ use validator::Validate;
 pub struct ChargingStation {
     pub id: i32,
     pub name: String,
-    pub location_id: i32,
+    pub location_id: Option<i32>,
     pub availability: bool,
 }
 
