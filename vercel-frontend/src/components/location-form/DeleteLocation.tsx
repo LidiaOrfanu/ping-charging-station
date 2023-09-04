@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ChargingStationLocation } from '../api';
 import './DeleteLocation.css';
-import CustomNotification from '../notification/CustomNotification';
 interface DeleteLocationFormProps {
   locations: ChargingStationLocation[];
   selectedLocation: number | null;
@@ -17,17 +16,10 @@ const DeleteLocationForm: React.FC<DeleteLocationFormProps> = ({
     onDeleteLocationClick,
   onClose,
   }) => {
-      const [showNotification, setShowNotification] = useState(false);
       const handleDeleteLocationClick = async () => {
       if (selectedLocation !== null) {
         try {
           await onDeleteLocationClick();
-          setShowNotification(true);
-    
-          setTimeout(() => {
-            setShowNotification(false);
-            onClose();
-          }, 1000);
         } catch (error) {
           console.error('Error deleting location:', error);
         }
@@ -75,7 +67,6 @@ const DeleteLocationForm: React.FC<DeleteLocationFormProps> = ({
             </button>
           </div>
         </form>
-        {showNotification && <CustomNotification message="Location removed successfully!" />}
       </div>
     </div>
   );

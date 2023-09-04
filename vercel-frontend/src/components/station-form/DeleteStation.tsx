@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ChargingStation } from '../api';
 import './DeleteStation.css';
-import CustomNotification from '../notification/CustomNotification';
 interface DeleteStationFormProps {
   stations: ChargingStation[];
   selectedStation: number | null;
@@ -17,16 +16,9 @@ const DeleteStationForm: React.FC<DeleteStationFormProps> = ({
   onDeleteStationClick,
   onClose,
   }) => {
-      const [showNotification, setShowNotification] = useState(false);
       const handleDeleteStationClick = () => {
       if (selectedStation !== null) {
         onDeleteStationClick();
-
-        setShowNotification(true);
-
-        setTimeout(() => {
-          setShowNotification(false);
-        }, 3000); 
       }
     };
   return (
@@ -70,7 +62,6 @@ const DeleteStationForm: React.FC<DeleteStationFormProps> = ({
             </button>
           </div>
         </form>
-        {showNotification && <CustomNotification message="Station removed successfully!" />}
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ use std::sync::Arc;
 use validator::Validate;
 // use validator::Validate;
 
-use crate::models;
+use crate::models::{self, location::{Location, UpdateLocation}};
 use crate::{models::location::CreateLocation, AppState};
 
 pub async fn handler_get_all_locations(
@@ -142,4 +142,61 @@ pub async fn handler_delete_location_by_id(
     }
 
     Ok(StatusCode::NO_CONTENT)
+}
+
+pub async fn handler_edit_location_by_id(
+    Path(id): Path<i32>,
+    State(data): State<Arc<AppState>>,
+    Json(body): Json<UpdateLocation>,
+) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
+    let sql_query = "SELECT * FROM locations WHERE id = $1";
+    let existing_location = query_as::<_, Location>(sql_query)
+        .bind(id)
+        .fetch_optional(&data.db)
+        .await;
+
+    if let Some(mut location) = existing_location.unwrap() {
+        if let Some(new_street) = &body.street {
+            location.street = new_street.clone();
+        }
+        if let Some(new_zip) = body.zip {
+            location.zip = new_zip;
+        }
+        if let Some(new_city) = body.city {
+            location.city = new_city;
+        }
+        if let Some(new_country) = body.country {
+            location.country = new_country;
+        }
+        let update_sql_query =
+            "UPDATE stations SET street = $1, zip = $2, city=$3, country=$4 WHERE id = $5 RETURNING *";
+        let updated_station: Result<Location, _> =
+            query_as::<_, Location>(update_sql_query)
+                .bind(location.street)
+                .bind(location.zip)
+                .bind(location.city)
+                .bind(location.country)
+                .bind(id)
+                .fetch_one(&data.db)
+                .await;
+
+        match updated_station {
+            Ok(updated) => {
+                return Ok((StatusCode::OK, Json(updated)));
+            }
+            Err(err) => {
+                let error_response = json!({
+                    "status": "error",
+                    "message": format!("{:?}", err)
+                });
+                return Err((StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)));
+            }
+        }
+    } else {
+        let error_response = json!({
+            "status": "fail",
+            "message": format!("Station with ID: {} not found", id)
+        });
+        return Err((StatusCode::NOT_FOUND, Json(error_response)));
+    }
 }

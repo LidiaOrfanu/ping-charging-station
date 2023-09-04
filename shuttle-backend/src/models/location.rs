@@ -21,3 +21,14 @@ pub struct CreateLocation {
     #[validate(length(min = 3, max = 15))]
     pub country: String,
 }
+
+#[derive(Debug, Deserialize, Serialize, sqlx::FromRow, Validate)]
+pub struct UpdateLocation  {
+    #[validate(length(min = 3, max = 35))]
+    pub street: Option<String>,
+    pub zip: Option<i32>,
+    #[validate(length(min = 3, max = 15))]
+    pub city: Option<String>,
+    #[validate(length(min = 3, max = 15))]
+    pub country: Option<String>,
+}

@@ -66,10 +66,12 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
 
     return (
       <div>
-        <Header  onAddStationClick={() => handleFormToggle('addStation')} 
-                 onDeleteStationClick={() => handleFormToggle('deleteStation')}
-                 onAddLocationClick={() => handleFormToggle('addLocation')}
-                 onDeleteLocationClick={() => handleFormToggle('deleteLocation')} />
+        <Header  
+          onAddStationClick={() => handleFormToggle('addStation')} 
+          onDeleteStationClick={() => handleFormToggle('deleteStation')}
+          onAddLocationClick={() => handleFormToggle('addLocation')}
+          onDeleteLocationClick={() => handleFormToggle('deleteLocation')} />
+  
         <ChargingStationList stations={stations} locations={locations} /> 
         {formMode && (
           <div className="modal">
@@ -80,8 +82,7 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
               <AddLocationForm onClose={handleCloseForm} setLocations={setLocations}/>
           )}
           {formMode === 'deleteStation' && (
-            <DeleteStationForm
-              onClose={() => {
+            <DeleteStationForm onClose={() => {
                 {handleCloseForm}
                 setSelectedStation(null);
               }}
@@ -93,8 +94,7 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
         )}
        
           {formMode === 'deleteLocation' && (
-            <DeleteLocationForm
-              onClose={() => {
+            <DeleteLocationForm onClose={() => {
                 {handleCloseForm}
                 setSelectedLocation(null);
               }}
