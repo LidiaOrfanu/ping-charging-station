@@ -5,7 +5,7 @@
   import DeleteStationForm from '../station-form/DeleteStation';
   import ChargingStationList from './ChargingStationList';
   import AddStationForm from '../station-form/AddStation';
-  import AddLocation from '../location-form/AddLocation';
+  import AddLocationForm from '../location-form/AddLocation';
 import DeleteLocationForm from '../location-form/DeleteLocation';
 
   function ChargingStationDashboard() {
@@ -103,7 +103,7 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
               <AddStationForm onClose={handleCloseAddForm} locations={locations} setStations={setStations}/>
           )}
           {showAddLocationForm && (
-              <AddLocation onClose={handleCloseAddLocationForm} />
+              <AddLocationForm onClose={handleCloseAddLocationForm} setLocations={setLocations}/>
           )}
           {showDeleteStationForm && (
             <DeleteStationForm

@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Field, Form } from 'formik';
 import './AddLocation.css';
-import { ChargingStationLocationRequest, addLocation } from '../api';
+import { ChargingStationLocation, ChargingStationLocationRequest, addLocation, getAllLocations } from '../api';
+import CustomNotification from '../notification/CustomNotification';
 
 interface AddLocationFormProps {
   onClose: () => void;
+  setLocations: React.Dispatch<React.SetStateAction<ChargingStationLocation[]>>;
 }
 
-const AddLocation: React.FC<AddLocationFormProps> = ({ onClose }) => {
+const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, setLocations }) => {
+  const [showNotification, setShowNotification] = useState(false);
+
   const initialValues = {
     street: '',
     zip: 0,
@@ -18,14 +22,29 @@ const AddLocation: React.FC<AddLocationFormProps> = ({ onClose }) => {
   return (
     <div className="add-location-form">
        <h2 className="add-location-form__title">Add a new location:</h2>
-      <Formik initialValues={initialValues} 
-              onSubmit={async (values, { setSubmitting, resetForm }) => {
+      <Formik initialValues={initialValues}
+              onSubmit={async (values, { setSubmitting }) => {
                 setSubmitting(true);
                 await addLocation(values as ChargingStationLocationRequest)
-                resetForm();
-                onClose();
+                .then(() => {
+                  getAllLocations()
+                    .then(data => {
+                      // Update the state with the new list of locations
+                      setLocations(data);
+                      setSubmitting(false);
+                      onClose();
+                      setShowNotification(true);
+                    })
+                    .catch(error => {
+                      console.error('Error fetching locations:', error);
+                      setSubmitting(false);
+                    });
+                })
+                .catch(error => {
+                  console.error('Error adding location:', error);
+                  setSubmitting(false);
+                });
               }}
-              // validationSchema={validationSchema}
             >
       {({ handleSubmit }) => (
             <Form onSubmit= {handleSubmit}>
@@ -68,8 +87,9 @@ const AddLocation: React.FC<AddLocationFormProps> = ({ onClose }) => {
             </Form>
       )}
       </Formik>
+      {showNotification && <CustomNotification message="Station added successfully!" />}
     </div>
   );
 };
 
-export default AddLocation;
+export default AddLocationForm;

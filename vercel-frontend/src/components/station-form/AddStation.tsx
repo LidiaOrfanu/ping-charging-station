@@ -19,16 +19,17 @@ const AddStationForm: React.FC<AddStationFormProps> = ({ onClose, locations , se
     setAvailability(newAvailability);
   };
 
+  const initialValues = {
+    name: '',
+    location_id: '',
+    availability: true,
+  };
+
   return (
     <div className="add-station-form-modal">
       <div className="add-station-form">
         <h2 className="add-station-form__title">Add a new charging station: </h2>
-        <Formik
-          initialValues={{
-            name: '',
-            location_id: '',
-            availability: true,
-          }}
+        <Formik initialValues={initialValues}
           onSubmit={(values, { setSubmitting }) => {
             const locationId = parseInt(values.location_id, 10);
             addStation({
