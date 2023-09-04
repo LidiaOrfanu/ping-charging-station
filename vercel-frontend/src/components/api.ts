@@ -127,7 +127,6 @@ export async function getStationByID(
 export async function deleteStationById(stationId: number): Promise<void> {
   const apiUrl = `${API_BASE_URL}/station/${stationId}`;
 
-  try {
     const response = await fetch(apiUrl, {
       method: 'DELETE',
     });
@@ -136,28 +135,23 @@ export async function deleteStationById(stationId: number): Promise<void> {
       const errorData = await response.json();
       throw new Error(errorData.message || 'Failed to delete station');
     }
-  } catch (error) {
-    throw new Error('Failed to delete station');
-  }
 }
 
 export async function deleteLocationById(locationId: number): Promise<void> {
-  console.log('deleteLocationById called');
   const apiUrl = `${API_BASE_URL}/location/${locationId}`;
 
-  try {
     const response = await fetch(apiUrl, {
       method: 'DELETE',
     });
 
-    console.log('API Response:', response);
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('Error data:', errorData); 
       throw new Error(errorData.message || 'Failed to delete location');
     }
-  } catch (error) {
-    console.error('Error:', error); 
-    throw new Error('Failed to delete location');
-  }
+}
+
+export async function updateLocationById(id: number, data: ChargingStationLocation): Promise<ChargingStationLocation> {
+    const response = await axios.patch(`/api/location/${id}`, data);
+    return response.data.data.location as ChargingStationLocation;
+
 }

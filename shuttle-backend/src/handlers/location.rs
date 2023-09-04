@@ -169,7 +169,7 @@ pub async fn handler_edit_location_by_id(
             location.country = new_country;
         }
         let update_sql_query =
-            "UPDATE stations SET street = $1, zip = $2, city=$3, country=$4 WHERE id = $5 RETURNING *";
+            "UPDATE locations SET street = $1, zip = $2, city=$3, country=$4 WHERE id = $5 RETURNING *";
         let updated_station: Result<Location, _> =
             query_as::<_, Location>(update_sql_query)
                 .bind(location.street)
