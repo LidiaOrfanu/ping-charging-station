@@ -68,3 +68,8 @@ Response:
  "location_id": 2,
  "availability": true
 }
+
+sqlx migrate run --database-url "conn-url"
+psql "connection_url"
+DEALLOCATE ALL; for issues with migrations statements
+\q to quit

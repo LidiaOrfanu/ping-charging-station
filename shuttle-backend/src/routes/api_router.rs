@@ -26,8 +26,8 @@ pub fn create_api_locations_router(app_state: Arc<AppState>) -> Router {
         .route(
             "/location/:id",
             get(handler_get_location_by_id)
+                        .delete(handler_delete_location_by_id),
                 //     .patch(handler_edit_location_by_id)
-                .delete(handler_delete_location_by_id),
         )
         .with_state(app_state)
 }

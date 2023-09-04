@@ -71,7 +71,7 @@ const DeleteStationForm: React.FC<DeleteStationFormProps> = ({
             </button>
           </div>
         </form>
-        {showNotification && <CustomNotification message="Station added successfully!" />}
+        {showNotification && <CustomNotification message="Station removed successfully!" />}
       </div>
     </div>
   );
