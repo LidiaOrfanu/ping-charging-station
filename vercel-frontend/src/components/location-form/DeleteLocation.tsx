@@ -18,17 +18,22 @@ const DeleteLocationForm: React.FC<DeleteLocationFormProps> = ({
   onClose,
   }) => {
       const [showNotification, setShowNotification] = useState(false);
-      const handleDeleteLocationClick = () => {
+      const handleDeleteLocationClick = async () => {
       if (selectedLocation !== null) {
-        onDeleteLocationClick();
-
-        setShowNotification(true);
-
-        setTimeout(() => {
-          setShowNotification(false);
-        }, 3000); 
+        try {
+          await onDeleteLocationClick();
+          setShowNotification(true);
+    
+          setTimeout(() => {
+            setShowNotification(false);
+            onClose();
+          }, 3000);
+        } catch (error) {
+          console.error('Error deleting location:', error);
+        }
       }
-    };
+    }; 
+
   return (
     <div className="delete-location-form-modal">
       <div className="delete-location-form">
