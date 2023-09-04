@@ -6,11 +6,10 @@ import CustomNotification from '../notification/CustomNotification';
 
 interface AddLocationFormProps {
   onClose: () => void;
-  onAddLocationClick: () => void;
   setLocations: React.Dispatch<React.SetStateAction<ChargingStationLocation[]>>;
 }
 
-const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, onAddLocationClick, setLocations }) => {
+const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, setLocations }) => {
   const [showNotification, setShowNotification] = useState(false);
 
   const initialValues = {
@@ -19,16 +18,6 @@ const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, onAddLocatio
     city: '',
     country: '',
   };
-
-  const handleAddLocationClick = async () => {
-        await onAddLocationClick();
-        setShowNotification(true);
-  
-        setTimeout(() => {
-          setShowNotification(false);
-          onClose();
-        }, 1000);
-    }
 
   return (
     <div className="add-location-form">
@@ -43,6 +32,11 @@ const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, onAddLocatio
                       // Update the state with the new list of locations
                       setLocations(data);
                       setSubmitting(false);
+                      setShowNotification(true);
+                      setTimeout(() => {
+                        setShowNotification(false);
+                        onClose();
+                      }, 1000);
                     })
                     .catch(error => {
                       console.error('Error fetching locations:', error);
@@ -86,9 +80,7 @@ const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, onAddLocatio
                       required />
               </div>
               <div className="add-location-form__button-group">
-                <button type="button"
-                        onClick={handleAddLocationClick}
-                        className="add-location-form__submit-button">
+                <button type="submit" className="add-location-form__submit-button">
                   Submit
                 </button>
                 <button onClick={onClose} className="add-location-form__close-button">

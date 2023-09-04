@@ -15,7 +15,7 @@ const DeleteLocationForm: React.FC<DeleteLocationFormProps> = ({
     selectedLocation,
     onLocationChange,
     onDeleteLocationClick,
-    onClose,
+  onClose,
   }) => {
       const [showNotification, setShowNotification] = useState(false);
       const handleDeleteLocationClick = async () => {
