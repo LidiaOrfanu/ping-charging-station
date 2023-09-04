@@ -5,9 +5,10 @@ interface HeaderProps {
   onAddStationClick?: () => void;
   onAddLocationClick?: () => void;
   onDeleteStationClick?: () => void;
+  onDeleteLocationClick?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onAddStationClick, onDeleteStationClick, onAddLocationClick = () => {} }) => {
+const Header: React.FC<HeaderProps> = ({ onAddStationClick, onDeleteStationClick, onAddLocationClick, onDeleteLocationClick = () => {} }) => {
   const handleAddStationClick = useCallback(() => {
     if (onAddStationClick) {
       onAddStationClick();
@@ -25,6 +26,12 @@ const Header: React.FC<HeaderProps> = ({ onAddStationClick, onDeleteStationClick
       onDeleteStationClick();
     }
   }, [onDeleteStationClick]);
+
+  const handleDeleteLocationClick  = useCallback(() => {
+    if (onDeleteLocationClick) {
+      onDeleteLocationClick();
+    }
+  }, [onDeleteLocationClick]);
 
   return (
     <header className="header">
@@ -47,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({ onAddStationClick, onDeleteStationClick
       <button onClick={handleAddStationClick} className="edit-button">
         Edit Location
       </button>
-      <button onClick={handleAddStationClick} className="delete-button">
+      <button onClick={handleDeleteLocationClick} className="delete-button">
         Delete Location
       </button>
 
