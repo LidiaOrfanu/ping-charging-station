@@ -32,8 +32,11 @@ const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, setLocations
                       // Update the state with the new list of locations
                       setLocations(data);
                       setSubmitting(false);
-                      onClose();
                       setShowNotification(true);
+                      setTimeout(() => {
+                        setShowNotification(false);
+                        onClose();
+                      }, 1000);
                     })
                     .catch(error => {
                       console.error('Error fetching locations:', error);
