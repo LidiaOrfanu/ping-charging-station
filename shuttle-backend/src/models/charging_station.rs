@@ -20,4 +20,5 @@ pub struct CreateChargingStation {
 pub struct UpdateChargingStation {
     pub name: Option<String>,
     pub availability: Option<bool>,
+    pub location_id: Option<i32>,
 }

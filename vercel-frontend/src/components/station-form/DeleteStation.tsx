@@ -35,7 +35,6 @@ const DeleteStationForm: React.FC<DeleteStationFormProps> = ({
         <h2 className="delete-station-form__title">Delete a charging station: </h2>
         <form>
           <div className="delete-station-form__field">
-            <label className="delete-station-form__label">Select a station to delete:</label>
             <select
               name="stationToDelete"
               className="delete-station-form__input"

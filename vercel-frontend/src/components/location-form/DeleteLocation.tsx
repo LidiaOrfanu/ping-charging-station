@@ -35,7 +35,6 @@ const DeleteLocationForm: React.FC<DeleteLocationFormProps> = ({
         <h2 className="delete-location-form__title">Delete a charging location: </h2>
         <form>
           <div className="delete-location-form__field">
-            <label className="delete-location-form__label">Select a location to delete:</label>
             <select
               name="locationToDelete"
               className="delete-location-form__input"
