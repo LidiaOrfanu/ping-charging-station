@@ -29,9 +29,9 @@ const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, setLocations
                   getAllLocations()
                     .then(data => {
                       setLocations(data);
-                      setSubmitting(false);
+                      // setSubmitting(false);
                       setShowSuccessMessage(true);
-                        onClose();
+                        // onClose();
                     })
                     .catch(error => {
                       console.error('Error fetching locations:', error);
