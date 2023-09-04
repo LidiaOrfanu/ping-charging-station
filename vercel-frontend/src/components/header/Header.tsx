@@ -42,18 +42,18 @@ const Header: React.FC<HeaderProps> = ({ onAddStationClick, onDeleteStationClick
       <button onClick={handleAddStationClick} className="add-button">
         Add Station
       </button>
-      <button onClick={handleAddStationClick} className="edit-button">
+      {/* <button onClick={handleAddStationClick} className="edit-button">
         Edit Station
-      </button>
+      </button> */}
       <button onClick={handleDeleteStationClick} className="delete-button">
         Delete Station
       </button>
       <button onClick={handleAddLocationClick} className="add-button">
         Add Location
       </button>
-      <button onClick={handleAddStationClick} className="edit-button">
+      {/* <button onClick={handleAddStationClick} className="edit-button">
         Edit Location
-      </button>
+      </button> */}
       <button onClick={handleDeleteLocationClick} className="delete-button">
         Delete Location
       </button>
