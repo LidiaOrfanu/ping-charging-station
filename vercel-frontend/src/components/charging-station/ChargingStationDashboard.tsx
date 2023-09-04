@@ -11,13 +11,14 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
   function ChargingStationDashboard() {
     const [stations, setStations] = useState<ChargingStation[]>([]);
     const [locations, setLocations] = useState<ChargingStationLocation[]>([]);
-    const [showAddStationForm, setShowAddStationForm] = useState(false);
+    // const [showAddStationForm, setShowAddStationForm] = useState(false);
     const [selectedStation, setSelectedStation] = useState<number | null>(null); 
     const [selectedLocation, setSelectedLocation] = useState<number | null>(null); 
-    const [showDeleteStationForm, setShowDeleteStationForm] = useState(false);
-    const [showDeleteLocationForm, setShowDeleteLocationForm] = useState(false);
-    const [showAddLocationForm, setShowAddLocationForm] = useState(false);
-
+    // const [showDeleteStationForm, setShowDeleteStationForm] = useState(false);
+    // const [showDeleteLocationForm, setShowDeleteLocationForm] = useState(false);
+    // const [showAddLocationForm, setShowAddLocationForm] = useState(false);
+    const [formMode, setFormMode] = useState<'addStation' | 'addLocation' | 'deleteStation' | 'deleteLocation' | null>(null);
+   
     const fetchStations = () => {
       getAllStations()
         .then(data => setStations(data))
@@ -30,30 +31,12 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
       .catch(error => console.error('Error fetching locations:', error));
     }
 
-    const handleShowAddStationForm = () => {
-      setShowAddStationForm(true);
+    const handleFormToggle = (mode: 'addStation' | 'addLocation' | 'deleteStation' | 'deleteLocation') => {
+      setFormMode(formMode === mode ? null : mode);
     };
-
-    const handleShowAddLocationForm = () => {
-      setShowAddLocationForm(true);
-      console.log('Add Location button clicked');
-    };
-
-    const handleShowDeleteStationForm = () => {
-      setShowDeleteStationForm(true);
-    };
-
-    const handleShowDeleteLocationForm = () => {
-      setShowDeleteLocationForm(true);
-    };
-
-    const handleCloseAddForm = () => {
-      setShowAddStationForm(false);
-      setShowAddLocationForm(false)
-    };
-
-    const handleCloseAddLocationForm = () => {
-      setShowAddLocationForm(false)
+  
+    const handleCloseForm = () => {
+      setFormMode(null);
     };
 
     const handleDeleteStationClick = () => {
@@ -61,12 +44,12 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
         deleteStationById(selectedStation)
         .then(() => {
           fetchStations();
-        setShowDeleteStationForm(false);
+        // setShowDeleteStationForm(false);
         })
         .catch(error => {
           console.error('Error deleting station:', error);
         });
-        setShowDeleteStationForm(false);
+        // setShowDeleteStationForm(false);
       }
     };
 
@@ -76,12 +59,12 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
           deleteLocationById(selectedStation)
           .then(() => {
             fetchLocations();
-          setShowDeleteLocationForm(false);
+          // setShowDeleteLocationForm(false);
           })
           .catch(error => {
             console.error('Error deleting location:', error);
           });
-          setShowDeleteLocationForm(false);
+          // setShowDeleteLocationForm(false);
         }
       };
   
@@ -92,23 +75,23 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
 
     return (
       <div>
-        <Header onAddStationClick={handleShowAddStationForm} 
-                onDeleteStationClick={handleShowDeleteStationForm}
-                onAddLocationClick={handleShowAddLocationForm}
-                onDeleteLocationClick={handleShowDeleteLocationForm} />
+        <Header  onAddStationClick={() => handleFormToggle('addStation')} 
+                 onDeleteStationClick={() => handleFormToggle('deleteStation')}
+                 onAddLocationClick={() => handleFormToggle('addLocation')}
+                 onDeleteLocationClick={() => handleFormToggle('deleteLocation')} />
         <ChargingStationList stations={stations} locations={locations} /> 
-        {(showAddStationForm || showDeleteStationForm || showAddLocationForm || showDeleteLocationForm) && (
+        {formMode && (
           <div className="modal">
-          {showAddStationForm && (
-              <AddStationForm onClose={handleCloseAddForm} locations={locations} setStations={setStations}/>
+          {formMode === 'addStation' && (
+              <AddStationForm onClose={handleCloseForm} locations={locations} setStations={setStations}/>
           )}
-          {showAddLocationForm && (
-              <AddLocationForm onClose={handleCloseAddLocationForm} setLocations={setLocations}/>
+          {formMode === 'addLocation' && (
+              <AddLocationForm onClose={handleCloseForm} setLocations={setLocations}/>
           )}
-          {showDeleteStationForm && (
+          {formMode === 'deleteStation' && (
             <DeleteStationForm
               onClose={() => {
-                setShowDeleteStationForm(false);
+                {handleCloseForm}
                 setSelectedStation(null);
               }}
               stations={stations}
@@ -118,10 +101,10 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
             />
         )}
        
-          {showDeleteLocationForm && (
+          {formMode === 'deleteLocation' && (
             <DeleteLocationForm
               onClose={() => {
-                setShowDeleteLocationForm(false);
+                {handleCloseForm}
                 setSelectedLocation(null);
               }}
               locations={locations}
