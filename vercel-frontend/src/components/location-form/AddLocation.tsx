@@ -33,10 +33,10 @@ const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, setLocations
                       setLocations(data);
                       setSubmitting(false);
                       setShowNotification(true);
-                      setTimeout(() => {
-                        setShowNotification(false);
+                      // setTimeout(() => {
+                        // setShowNotification(false);
                         onClose();
-                      }, 1000);
+                      // }, 1000);
                     })
                     .catch(error => {
                       console.error('Error fetching locations:', error);
@@ -90,7 +90,7 @@ const AddLocationForm: React.FC<AddLocationFormProps> = ({ onClose, setLocations
             </Form>
       )}
       </Formik>
-      {showNotification && <CustomNotification message="Station added successfully!" />}
+      {showNotification && <CustomNotification message="Location added successfully!" />}
     </div>
   );
 };
