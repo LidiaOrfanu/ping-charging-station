@@ -142,7 +142,7 @@ export async function deleteStationById(stationId: number): Promise<void> {
 }
 
 export async function deleteLocationById(locationId: number): Promise<void> {
-  const apiUrl = `${API_BASE_URL}location/${locationId}`;
+  const apiUrl = `${API_BASE_URL}/location/${locationId}`;
 
   try {
     const response = await fetch(apiUrl, {
