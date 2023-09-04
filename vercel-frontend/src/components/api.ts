@@ -142,6 +142,7 @@ export async function deleteStationById(stationId: number): Promise<void> {
 }
 
 export async function deleteLocationById(locationId: number): Promise<void> {
+  console.log('deleteLocationById called');
   const apiUrl = `${API_BASE_URL}/location/${locationId}`;
 
   try {
@@ -149,11 +150,14 @@ export async function deleteLocationById(locationId: number): Promise<void> {
       method: 'DELETE',
     });
 
+    console.log('API Response:', response);
     if (!response.ok) {
       const errorData = await response.json();
+      console.error('Error data:', errorData); 
       throw new Error(errorData.message || 'Failed to delete location');
     }
   } catch (error) {
+    console.error('Error:', error); 
     throw new Error('Failed to delete location');
   }
 }

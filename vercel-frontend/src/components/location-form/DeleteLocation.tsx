@@ -27,7 +27,7 @@ const DeleteLocationForm: React.FC<DeleteLocationFormProps> = ({
           setTimeout(() => {
             setShowNotification(false);
             onClose();
-          }, 3000);
+          }, 1000);
         } catch (error) {
           console.error('Error deleting location:', error);
         }
