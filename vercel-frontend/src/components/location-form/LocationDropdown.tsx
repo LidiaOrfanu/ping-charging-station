@@ -7,7 +7,9 @@ interface LocationDropdownProps
     onLocationChange: (value: number) => void;
 }
 
-function LocationDropdown({ locations, onLocationChange }: LocationDropdownProps) {  return (
+function LocationDropdown({ locations, onLocationChange }: LocationDropdownProps) {  
+  console.log(locations)
+  return (
     <select
       name="selectLocation"
       className="location-form__input"
