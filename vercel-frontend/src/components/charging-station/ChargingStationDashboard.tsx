@@ -74,6 +74,7 @@ import EditStationForm from '../station-form/EditStation';
           onDeleteStationClick={() => handleFormToggle('deleteStation')}
           onAddLocationClick={() => handleFormToggle('addLocation')}
           onEditLocationClick={() => handleFormToggle('editLocation')}
+          onEditStationClick={() => handleFormToggle('editStation')}
           onDeleteLocationClick={() => handleFormToggle('deleteLocation')} />
   
         <ChargingStationList stations={stations} locations={locations} /> 

@@ -47,7 +47,7 @@ const EditStationForm: React.FC<EditStationFormProps> = ({
                         onClose();
                     })
                     .catch(error => {
-                      console.error('Error fetching locations:', error);
+                      console.error('Error fetching stations:', error);
                       setSubmitting(false);
                     });
                 })
