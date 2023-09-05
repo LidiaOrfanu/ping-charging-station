@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChargingStationLocation } from '../api-location';
-
+import './LocationDropdown.css';
 interface LocationDropdownProps 
 {
     locations: ChargingStationLocation[];
@@ -10,8 +10,8 @@ interface LocationDropdownProps
 
 function LocationDropdown({ locations, selectedLocation, onLocationChange }: LocationDropdownProps) {  return (
     <select
-      name="locationToDelete"
-      className="delete-location-form__input"
+      name="selectLocation"
+      className="location-form__input"
       value={selectedLocation || ''}
       onChange={(e) => {
         const value = parseInt(e.target.value, 10);

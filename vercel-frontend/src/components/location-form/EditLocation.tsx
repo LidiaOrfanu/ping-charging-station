@@ -101,7 +101,7 @@ const EditLocationForm: React.FC<EditLocationFormProps> = ({
                 <button type="submit" className="edit-location-form__submit-button" disabled={isSubmitting}>
                   Submit
                 </button>
-                <button onClick={onClose} className="edit-location-form__close-button">
+                <button onClick={onClose} className="edit-location-form__close-button" disabled={isSubmitting}>
                   Cancel
                 </button>
               </div>

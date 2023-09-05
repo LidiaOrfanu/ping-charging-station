@@ -18,9 +18,7 @@
     margin: 10px 15px 25px;
   }
 
-.delete-location-form__input {
-  flex: 3;
-}
+
 
 .delete-location-form__button-group {
     display: flex;
