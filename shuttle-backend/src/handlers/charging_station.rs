@@ -175,10 +175,14 @@ pub async fn handler_edit_station_by_id(
 
     if let Some(mut station) = existing_station.unwrap() {
         if let Some(new_name) = &body.name {
-            station.name = new_name.clone();
-        }
+            if !new_name.is_empty() {
+                station.name = new_name.clone();
+            }
+         }
         if let Some(new_availability) = body.availability {
-            station.availability = new_availability;
+            if new_availability == true || new_availability == false {
+                station.availability = new_availability;
+            }
         }
 
         let update_sql_query =

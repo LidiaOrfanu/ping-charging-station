@@ -7,9 +7,17 @@ interface HeaderProps {
   onDeleteStationClick?: () => void;
   onDeleteLocationClick?: () => void;
   onEditLocationClick?: () => void;
+  onEditStationClick?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onAddStationClick, onDeleteStationClick, onAddLocationClick, onDeleteLocationClick, onEditLocationClick = () => {} }) => {
+const Header: React.FC<HeaderProps> = ({ 
+  onAddStationClick, 
+  onDeleteStationClick, 
+  onAddLocationClick, 
+  onDeleteLocationClick, 
+  onEditLocationClick, 
+  onEditStationClick }) => {
+
   const handleAddStationClick = useCallback(() => {
     if (onAddStationClick) {
       onAddStationClick();
@@ -40,11 +48,22 @@ const Header: React.FC<HeaderProps> = ({ onAddStationClick, onDeleteStationClick
     }
   }, [onEditLocationClick]);
 
+  const handleEditStationClick  = useCallback(() => {
+    if (onEditStationClick) {
+      onEditStationClick();
+    }
+  }, [onEditStationClick]);
+
   const buttons = [
     {
       text: 'Add Station',
       onClick: handleAddStationClick,
       type: 'add',
+    },
+    {
+      text: 'Edit Station',
+      onClick: handleEditStationClick,
+      type: 'edit',
     },
     {
       text: 'Delete Station',
@@ -57,14 +76,14 @@ const Header: React.FC<HeaderProps> = ({ onAddStationClick, onDeleteStationClick
       type: 'add',
     },
     {
-      text: 'Delete Location',
-      onClick: handleDeleteLocationClick,
-      type: 'delete',
-    },
-    {
       text: 'Edit Location',
       onClick: handleEditLocationClick,
       type: 'edit',
+    },
+    {
+      text: 'Delete Location',
+      onClick: handleDeleteLocationClick,
+      type: 'delete',
     },
   ];
   

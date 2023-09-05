@@ -19,41 +19,16 @@ export interface StationResponse {
   };
   status: "success";
 }
-
-export interface UpdateStationResponse {
-  id: number;
-  name: string;
-  location_id: number;
-  availability: boolean;
+export interface UpdateChargingStationRequest {
+  name?: string;
+  availability?: boolean | null;
 }
-
 
 export async function getAllStations(): Promise<ChargingStation[]> {
   const response = await fetch(`${API_BASE_URL}/stations`);
   const data = await response.json();
   return data;
 }
-
-// export async function updateStationName(
-//   stationId: number,
-//   updateData: UpdateStationNameRequest
-// ): Promise<UpdateStationResponse> {
-//   const response = await fetch(`${API_BASE_URL}/station/${stationId}`, {
-//     method: "PATCH",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(updateData),
-//   });
-
-//   if (!response.ok) {
-//     const errorMessage = await response.json();
-//     throw new Error(errorMessage.message || "Failed to update station name");
-//   }
-
-//   const data: UpdateStationResponse = await response.json();
-//   return data;
-// }
 
 export async function addStation(stationData: {
   name: string;
@@ -95,3 +70,8 @@ export async function deleteStationById(stationId: number): Promise<void> {
     }
 }
 
+export async function updateStationById(id: number | null, data: UpdateChargingStationRequest): Promise<ChargingStation> {
+  const response = await axios.patch(`${API_BASE_URL}/station/${id}`, data);
+  return response.data.location as ChargingStation;
+
+}

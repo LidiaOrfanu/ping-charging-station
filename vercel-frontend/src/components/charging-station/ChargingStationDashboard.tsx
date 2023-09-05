@@ -9,13 +9,14 @@ import AddStationForm from '../station-form/AddStation';
 import AddLocationForm from '../location-form/AddLocation';
 import DeleteLocationForm from '../location-form/DeleteLocation';
 import EditLocationForm from '../location-form/EditLocation';
+import EditStationForm from '../station-form/EditStation';
 
   function ChargingStationDashboard() {
     const [stations, setStations] = useState<ChargingStation[]>([]);
     const [locations, setLocations] = useState<ChargingStationLocation[]>([]);
     const [selectedStation, setSelectedStation] = useState<number | null>(null); 
     const [selectedLocation, setSelectedLocation] = useState<number | null>(null); 
-    const [formMode, setFormMode] = useState<'addStation' | 'addLocation' | 'deleteStation' | 'deleteLocation' | 'editLocation'|null>(null);
+    const [formMode, setFormMode] = useState<'addStation' | 'addLocation' | 'deleteStation' | 'deleteLocation' | 'editLocation' | 'editStation' |null>(null);
    
     const fetchStations = () => {
       getAllStations()
@@ -29,7 +30,7 @@ import EditLocationForm from '../location-form/EditLocation';
       .catch(error => console.error('Error fetching locations:', error));
     }
 
-    const handleFormToggle = (mode: 'addStation' | 'addLocation' | 'deleteStation' | 'deleteLocation' | 'editLocation') => {
+    const handleFormToggle = (mode: 'addStation' | 'addLocation' | 'deleteStation' | 'deleteLocation' | 'editLocation' | 'editStation') => {
       setFormMode(formMode === mode ? null : mode);
     };
   
@@ -80,36 +81,47 @@ import EditLocationForm from '../location-form/EditLocation';
           <div className="modal">
           {formMode === 'addStation' && (
               <AddStationForm onClose={handleCloseForm} locations={locations} setStations={setStations}/>
-          )}
-          {formMode === 'addLocation' && (
-              <AddLocationForm onClose={handleCloseForm} setLocations={setLocations}/>
-          )}
-          {formMode === 'deleteStation' && (
-            <DeleteStationForm onClose={handleCloseForm}
-              stations={stations}
-              selectedStation={selectedStation}
-              onStationChange={(value) => setSelectedStation(value)}
-              onDeleteStationClick={handleDeleteStationClick}
-            />
         )}
-       
-          {formMode === 'deleteLocation' && (
-            <DeleteLocationForm onClose={handleCloseForm}
-              locations={locations}
-              selectedLocation={selectedLocation}
-              onLocationChange={(value) => setSelectedLocation(value)}
-              onDeleteLocationClick={handleDeleteLocationClick}
-            />
-          )}
 
-          {formMode === 'editLocation' && (
-            <EditLocationForm onClose={handleCloseForm}
-              locations={locations}
-              selectedLocation={selectedLocation}
-              setLocations={setLocations}
-              onLocationChange={(value) => setSelectedLocation(value)}
-            />
-          )}
+        {formMode === 'addLocation' && (
+              <AddLocationForm onClose={handleCloseForm} setLocations={setLocations}/>
+        )}
+        
+        {formMode === 'deleteStation' && (
+          <DeleteStationForm onClose={handleCloseForm}
+            stations={stations}
+            selectedStation={selectedStation}
+            onStationChange={(value) => setSelectedStation(value)}
+            onDeleteStationClick={handleDeleteStationClick}
+          />
+        )}
+
+        {formMode === 'deleteLocation' && (
+          <DeleteLocationForm onClose={handleCloseForm}
+            locations={locations}
+            selectedLocation={selectedLocation}
+            onLocationChange={(value) => setSelectedLocation(value)}
+            onDeleteLocationClick={handleDeleteLocationClick}
+          />
+        )}
+
+        {formMode === 'editLocation' && (
+          <EditLocationForm onClose={handleCloseForm}
+            locations={locations}
+            selectedLocation={selectedLocation}
+            setLocations={setLocations}
+            onLocationChange={(value) => setSelectedLocation(value)}
+          />
+        )}
+
+        {formMode === 'editStation' && (
+          <EditStationForm onClose={handleCloseForm}
+            stations={stations}
+            selectedStation={selectedStation}
+            setStations={setStations}
+            onStationChange={(value) => setSelectedStation(value)}
+          />
+        )}
         </div>
         )}
     </div>

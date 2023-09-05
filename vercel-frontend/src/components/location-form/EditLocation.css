@@ -13,7 +13,8 @@
   }
   
   .edit-location-form__title {
-    color: #01809a;
+    font-family: "Gill Sans Extrabold", sans-serif;
+    
   }
   
   .edit-location-form__field {
@@ -24,7 +25,6 @@
   
   .edit-location-form__label {
     padding-right: 10px;
-    color: #01809a;
   }
   
   
