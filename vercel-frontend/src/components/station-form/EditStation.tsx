@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Field, Form } from 'formik';
-import './EditLocation.css';
+import './EditStation.css';
 import { ChargingStation, UpdateChargingStationRequest, getAllStations, updateStationById } from '../api-station';
 import StationsDropdown from './StationsDropdown';
 
