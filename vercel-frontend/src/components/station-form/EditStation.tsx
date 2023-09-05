@@ -36,6 +36,7 @@ const EditStationForm: React.FC<EditStationFormProps> = ({
     <div className="edit-station-form">
        <h2 className="edit-station-form__title">Edit a station:</h2>
        <div className="edit-station-form__field">
+       <label className="edit-station-form__label">Select a charging station:</label>
             <StationsDropdown
               stations={stations}
               onStationChange={onStationChange}
