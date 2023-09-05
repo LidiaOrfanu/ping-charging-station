@@ -31,20 +31,10 @@ const EditLocationForm: React.FC<EditLocationFormProps> = ({
     <div className="edit-location-form">
        <h2 className="edit-location-form__title">Edit a location:</h2>
        <div className="edit-location-form__field">
-            <select
-              name="locationToEdit"
-              className="edit-location-form__input"
-              value={selectedLocation || ''}
-              onChange={(e) => {
-                const value = parseInt(e.target.value, 10);
-                onLocationChange(value);
-              }}
-            >
             <LocationDropdown
               locations={locations}
               onLocationChange={onLocationChange}
             />
-            </select>
           </div>
 
       <Formik initialValues={initialValues}
