@@ -17,7 +17,7 @@ function StationsDropdown({ stations,  onStationChange }: StationDropdownProps) 
         onStationChange(value);
       }}
     >
-      <option value="">Select a station</option>
+      <option value="">Available charging stations</option>
       {stations.map((station) => (
         <option key={station.id} value={station.id}>
           {station.name}
