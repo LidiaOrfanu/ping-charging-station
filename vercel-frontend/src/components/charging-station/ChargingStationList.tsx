@@ -1,6 +1,7 @@
 import React from 'react';
-import { ChargingStation, ChargingStationLocation } from '../api-station';
+import { ChargingStation } from '../api-station';
 import './ChargingStationList.css';
+import { ChargingStationLocation } from '../api-location';
 
 interface StationListProps {
     stations: ChargingStation[];
