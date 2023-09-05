@@ -28,7 +28,6 @@ const DeleteLocationForm: React.FC<DeleteLocationFormProps> = ({
     }; 
 
   return (
-    <div className="delete-location-form-modal">
       <div className="delete-location-form">
         <h2 className="delete-location-form__title">Delete a charging location: </h2>
         <form>
@@ -68,7 +67,6 @@ const DeleteLocationForm: React.FC<DeleteLocationFormProps> = ({
           </div>
         </form>
       </div>
-    </div>
   );
 };
 

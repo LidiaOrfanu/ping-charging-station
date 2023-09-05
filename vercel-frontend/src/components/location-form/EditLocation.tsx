@@ -9,16 +9,14 @@ interface EditLocationFormProps {
     selectedLocation: number | null;
     setLocations: React.Dispatch<React.SetStateAction<ChargingStationLocation[]>>;
     onLocationChange: (value: number | null) => void;
-    onEditLocationClick: () => void;
     onClose: () => void;
 }
 
-const AddLocationForm: React.FC<EditLocationFormProps> = ({
+const EditLocationForm: React.FC<EditLocationFormProps> = ({
     locations,
     selectedLocation,
     setLocations,
     onLocationChange,
-    onEditLocationClick,
     onClose,
 }) => {
 
@@ -29,15 +27,6 @@ const AddLocationForm: React.FC<EditLocationFormProps> = ({
     country: '',
   };
 
-  const handleEditLocationClick = async () => {
-    if (selectedLocation !== null) {
-      try {
-        await onEditLocationClick();
-      } catch (error) {
-        console.error('Error updating location:', error);
-      }
-    }
-  }; 
   return (
     <div className="edit-location-form">
        <h2 className="edit-location-form__title">Edit a location:</h2>
@@ -62,26 +51,23 @@ const AddLocationForm: React.FC<EditLocationFormProps> = ({
       <Formik initialValues={initialValues}
               onSubmit={async (values, { setSubmitting }) => {
                 setSubmitting(true);
-                await updateLocationById(selectedLocation, values as ChargingStationLocationRequest)
-                .then(() => {
-                  getAllLocations()
-                    .then(data => {
-                      setLocations(data);
-                      setSubmitting(false);
-                        onClose();
-                    })
-                    .catch(error => {
-                      console.error('Error fetching locations:', error);
-                      setSubmitting(false);
-                    });
-                })
-                .catch(error => {
-                  console.error('Error adding location:', error);
-                  setSubmitting(false);
-                });
-              }}
-            >
-      {({ handleSubmit }) => (
+          if (selectedLocation !== null) {
+            try {
+              await updateLocationById(selectedLocation, values as ChargingStationLocationRequest);
+              const updatedLocations = await getAllLocations();
+              setLocations(updatedLocations);
+              setSubmitting(false);
+              onClose();
+            } catch (error) {
+              console.error('Error editing location:', error);
+              setSubmitting(false);
+            }
+          } else {
+            console.error('Error editing location: No location selected');
+          }
+        }}
+        >
+      {({ isSubmitting, handleSubmit }) => (
             <Form onSubmit= {handleSubmit}>
               <div className="edit-location-form__field">
                 <label className="edit-location-form__label">Street:</label>
@@ -112,7 +98,7 @@ const AddLocationForm: React.FC<EditLocationFormProps> = ({
                 />
               </div>
               <div className="edit-location-form__button-group">
-                <button onClick={handleEditLocationClick} className="edit-location-form__submit-button">
+                <button type="submit" className="edit-location-form__submit-button" disabled={isSubmitting}>
                   Submit
                 </button>
                 <button onClick={onClose} className="edit-location-form__close-button">
@@ -126,4 +112,4 @@ const AddLocationForm: React.FC<EditLocationFormProps> = ({
   );
 };
 
-export default AddLocationForm;
+export default EditLocationForm;

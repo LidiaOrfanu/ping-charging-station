@@ -8,13 +8,14 @@ import ChargingStationList from './ChargingStationList';
 import AddStationForm from '../station-form/AddStation';
 import AddLocationForm from '../location-form/AddLocation';
 import DeleteLocationForm from '../location-form/DeleteLocation';
+import EditLocationForm from '../location-form/EditLocation';
 
   function ChargingStationDashboard() {
     const [stations, setStations] = useState<ChargingStation[]>([]);
     const [locations, setLocations] = useState<ChargingStationLocation[]>([]);
     const [selectedStation, setSelectedStation] = useState<number | null>(null); 
     const [selectedLocation, setSelectedLocation] = useState<number | null>(null); 
-    const [formMode, setFormMode] = useState<'addStation' | 'addLocation' | 'deleteStation' | 'deleteLocation' | null>(null);
+    const [formMode, setFormMode] = useState<'addStation' | 'addLocation' | 'deleteStation' | 'deleteLocation' | 'editLocation'|null>(null);
    
     const fetchStations = () => {
       getAllStations()
@@ -28,7 +29,7 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
       .catch(error => console.error('Error fetching locations:', error));
     }
 
-    const handleFormToggle = (mode: 'addStation' | 'addLocation' | 'deleteStation' | 'deleteLocation') => {
+    const handleFormToggle = (mode: 'addStation' | 'addLocation' | 'deleteStation' | 'deleteLocation' | 'editLocation') => {
       setFormMode(formMode === mode ? null : mode);
     };
   
@@ -71,6 +72,7 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
           onAddStationClick={() => handleFormToggle('addStation')} 
           onDeleteStationClick={() => handleFormToggle('deleteStation')}
           onAddLocationClick={() => handleFormToggle('addLocation')}
+          onEditLocationClick={() => handleFormToggle('editLocation')}
           onDeleteLocationClick={() => handleFormToggle('deleteLocation')} />
   
         <ChargingStationList stations={stations} locations={locations} /> 
@@ -95,14 +97,23 @@ import DeleteLocationForm from '../location-form/DeleteLocation';
         )}
        
           {formMode === 'deleteLocation' && (
-            <DeleteLocationForm onClose={() => {
+            <DeleteLocationForm onClose={handleCloseForm}
+              locations={locations}
+              selectedLocation={selectedLocation}
+              onLocationChange={(value) => setSelectedLocation(value)}
+              onDeleteLocationClick={handleDeleteLocationClick}
+            />
+          )}
+
+          {formMode === 'editLocation' && (
+            <EditLocationForm onClose={() => {
                 {handleCloseForm}
                 setSelectedLocation(null);
               }}
               locations={locations}
               selectedLocation={selectedLocation}
+              setLocations={setLocations}
               onLocationChange={(value) => setSelectedLocation(value)}
-              onDeleteLocationClick={handleDeleteLocationClick}
             />
           )}
         </div>
