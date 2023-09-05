@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChargingStationLocation } from '../api-location';
 import './DeleteLocation.css';
+import LocationDropdown from './LocationDropdown';
 interface DeleteLocationFormProps {
   locations: ChargingStationLocation[];
   selectedLocation: number | null;
@@ -10,10 +11,10 @@ interface DeleteLocationFormProps {
 }
 
 const DeleteLocationForm: React.FC<DeleteLocationFormProps> = ({
-    locations,
-    selectedLocation,
-    onLocationChange,
-    onDeleteLocationClick,
+  locations,
+  selectedLocation,
+  onLocationChange,
+  onDeleteLocationClick,
   onClose,
   }) => {
       const handleDeleteLocationClick = async () => {
@@ -41,12 +42,11 @@ const DeleteLocationForm: React.FC<DeleteLocationFormProps> = ({
                 onLocationChange(value);
               }}
             >
-              <option value="">Select a location</option>
-              {locations.map((location) => (
-                <option key={location.id} value={location.id}>
-                  {location.street}, {location.zip}, {location.city}, {location.country}
-                </option>
-              ))}
+            <LocationDropdown
+              locations={locations}
+              selectedLocation={selectedLocation}
+              onLocationChange={onLocationChange}
+            />
             </select>
           </div>
           <div className="delete-location-form__button-group">
