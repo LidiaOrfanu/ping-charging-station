@@ -85,10 +85,7 @@ import EditLocationForm from '../location-form/EditLocation';
               <AddLocationForm onClose={handleCloseForm} setLocations={setLocations}/>
           )}
           {formMode === 'deleteStation' && (
-            <DeleteStationForm onClose={() => {
-                {handleCloseForm}
-                setSelectedStation(null);
-              }}
+            <DeleteStationForm onClose={handleCloseForm}
               stations={stations}
               selectedStation={selectedStation}
               onStationChange={(value) => setSelectedStation(value)}
