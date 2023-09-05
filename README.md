@@ -15,11 +15,11 @@ It provides essential functionalities for administrators: add, edit, and delete 
 - Formik for the forms
 - Shuttle Secrets to store the environment variable (database connection string)
 
-## Client deployment using Vercel: <https://ping-charging-station.vercel.app>
+## Deployment
 
-## Server deployment using Shuttle: <https://ping-charging-station.shuttleapp.rs/api/stations>
-
-## Database hosting on Supabase (PostgreSQL)
+Vercel for the frontend: <https://ping-charging-station.vercel.app>  
+Shuttle for the backend: <https://ping-charging-station.shuttleapp.rs/api/stations>  
+Supabase(PostgreSQL) for the database hosting  
 
 ## Setup
 
@@ -40,83 +40,83 @@ This setup establishes a relationship between stations and locations, where each
 
 ## Endpoints
 
-GET all locations: <https://ping-charging-station.shuttleapp.rs/api/locations>
-GET all stations: <https://ping-charging-station.shuttleapp.rs/api/stations>
+GET all locations: <https://ping-charging-station.shuttleapp.rs/api/locations>  
+GET all stations: <https://ping-charging-station.shuttleapp.rs/api/stations>  
+  
+GET, DELETE, PATCH location by id: <https://ping-charging-station.shuttleapp.rs/api/location/2>  
+GET, DELETE, PATCH station by id: <https://ping-charging-station.shuttleapp.rs/api/station/2>  
 
-GET, DELETE, PATCH location by id: <https://ping-charging-station.shuttleapp.rs/api/location/2>
-GET, DELETE, PATCH station by id: <https://ping-charging-station.shuttleapp.rs/api/station/2>
-
-POST station: <https://ping-charging-station.shuttleapp.rs/api/station>
-example Json Body:
-{
- "name": "StationX",
- "location_id": 1,
- "availability": false
-}
-Headers:
-Content-Type: application/json
-
-Response:
-{
- "data": {
-  "station": {
-   "availability": false,
-   "id": 3,
-   "location_id": 1,
-   "name": "StationX"
-  }
- },
- "status": "success"
-}
-
-POST location: <https://ping-charging-station.shuttleapp.rs/api/location>
-example Json Body:
-{
-  "street": "Penguins Land",
-  "zip": 1232,
-  "city": "NoCity",
-  "country": "Antarctica"
-}
-Headers:
-Content-Type: application/json
-
-Response:
-{
- "data": {
-  "location": {
-   "city": "NoCity",
-   "country": "Antarctica",
-   "id": 2,
-   "street": "Penguins Land",
-   "zip": 1232
-  }
- },
- "status": "success"
-}
-
-PATCH station: <https://ping-charging-station.shuttleapp.rs/api/station/3>
-Can update only availability/only name or both
-
-Request Json Body
-{
-    "availability": false,
-    "name":"Ping-X"
-}
-
-Request Json Body
-{
-    "availability": true,
-    "name":""
-}
-
-Response:
-{
-    "id": 3,
-    "name": "Ping-X",
-    "location_id": 10,
-    "availability": true
-}
-
+POST station: <https://ping-charging-station.shuttleapp.rs/api/station>  
+Request:  
+{  
+ "name": "StationX",  
+ "location_id": 1,  
+ "availability": false  
+}  
+Headers:  
+Content-Type: application/json  
+  
+Response:  
+{  
+ "data": {  
+  "station": {  
+   "availability": false,  
+   "id": 3,  
+   "location_id": 1,  
+   "name": "StationX"  
+  }  
+ },  
+ "status": "success"  
+}  
+  
+POST location: <https://ping-charging-station.shuttleapp.rs/api/location>  
+Request:  
+{  
+  "street": "Penguins Land",  
+  "zip": 1232,  
+  "city": "NoCity",  
+  "country": "Antarctica"  
+}  
+Headers:  
+Content-Type: application/json  
+  
+Response:  
+{  
+ "data": {  
+  "location": {  
+   "city": "NoCity",  
+   "country": "Antarctica",  
+   "id": 2,  
+   "street": "Penguins Land",  
+   "zip": 1232  
+  }  
+ },  
+ "status": "success"  
+}  
+  
+PATCH station: <https://ping-charging-station.shuttleapp.rs/api/station/3>  
+Can update only availability/only name or both  
+  
+Request:  
+{  
+    "availability": false,  
+    "name":"Ping-X"  
+}  
+  
+Request:  
+{  
+    "availability": true,  
+    "name":""  
+}  
+  
+Response:  
+{  
+    "id": 3,  
+    "name": "Ping-X",  
+    "location_id": 10,  
+    "availability": true  
+}  
+  
 PATCH location example: <https://ping-charging-station.shuttleapp.rs/api/location/2>  
 Can update either all the fields or optional ones: only street/zip/city/country  
 Request:  
