@@ -54,7 +54,7 @@ export async function deleteLocationById(locationId: number): Promise<void> {
 }
 
 export async function updateLocationById(id: number | null, data: ChargingStationLocationRequest): Promise<ChargingStationLocation> {
-    const response = await axios.patch(`${API_BASE_URL}/api/location/${id}`, data);
+    const response = await axios.patch(`${API_BASE_URL}/location/${id}`, data);
     return response.data.data.location as ChargingStationLocation;
 
 }
