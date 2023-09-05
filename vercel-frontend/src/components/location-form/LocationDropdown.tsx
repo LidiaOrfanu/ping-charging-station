@@ -4,15 +4,13 @@ import './LocationDropdown.css';
 interface LocationDropdownProps 
 {
     locations: ChargingStationLocation[];
-    selectedLocation: number | null;
     onLocationChange: (value: number) => void;
 }
 
-function LocationDropdown({ locations, selectedLocation, onLocationChange }: LocationDropdownProps) {  return (
+function LocationDropdown({ locations, onLocationChange }: LocationDropdownProps) {  return (
     <select
       name="selectLocation"
       className="location-form__input"
-      value={selectedLocation || ''}
       onChange={(e) => {
         const value = parseInt(e.target.value, 10);
         onLocationChange(value);

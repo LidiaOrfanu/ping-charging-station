@@ -42,7 +42,6 @@ const EditLocationForm: React.FC<EditLocationFormProps> = ({
             >
             <LocationDropdown
               locations={locations}
-              selectedLocation={selectedLocation}
               onLocationChange={onLocationChange}
             />
             </select>

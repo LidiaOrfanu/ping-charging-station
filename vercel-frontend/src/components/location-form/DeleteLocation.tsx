@@ -43,7 +43,6 @@ const DeleteLocationForm: React.FC<DeleteLocationFormProps> = ({
             >
             <LocationDropdown
               locations={locations}
-              selectedLocation={selectedLocation}
               onLocationChange={onLocationChange}
             />
             </select>
