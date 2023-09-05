@@ -23,7 +23,7 @@ const EditStationForm: React.FC<EditStationFormProps> = ({
     const [availability, setAvailability] = useState(true);
 
   const initialValues = {
-    availability: null,
+    availability: true,
     name: '',
   };
 
@@ -70,14 +70,14 @@ const EditStationForm: React.FC<EditStationFormProps> = ({
       {({ handleSubmit }) => (
             <Form onSubmit= {handleSubmit}>
               <div className="edit-station-form__field">
-                <label className="edit-station-form__label">Charging Station Name:</label>
+                <label className="edit-station-form__label">Station Name:</label>
                 <Field type="text"
                       name="name"
                       className="edit-station-form__input"
                 />
               </div>
               <div className="edit-station-form__field">
-                <label className="edit-station-form__label">Availability:</label>
+                <label className="edit-station-form__label">Status:</label>
                 <div className="edit-station-form__radio-group">
                   <label>
                     <Field
