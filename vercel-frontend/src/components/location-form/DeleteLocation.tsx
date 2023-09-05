@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChargingStationLocation } from '../api-location';
 import './DeleteLocation.css';
-import LocationDropdown from './LocationDropdown';
+import LocationsDropdown from './LocationsDropdown';
 interface DeleteLocationFormProps {
   locations: ChargingStationLocation[];
   selectedLocation: number | null;
@@ -32,7 +32,7 @@ const DeleteLocationForm: React.FC<DeleteLocationFormProps> = ({
         <h2 className="delete-location-form__title">Delete a charging location: </h2>
         <form>
           <div className="delete-location-form__field">
-            <LocationDropdown
+            <LocationsDropdown
               locations={locations}
               onLocationChange={onLocationChange}
             />

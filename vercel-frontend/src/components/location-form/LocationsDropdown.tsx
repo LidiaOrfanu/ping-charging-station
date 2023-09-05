@@ -1,13 +1,14 @@
 import React from 'react';
 import { ChargingStationLocation } from '../api-location';
-import './LocationDropdown.css';
+import './LocationsDropdown.css';
+
 interface LocationDropdownProps 
 {
     locations: ChargingStationLocation[];
     onLocationChange: (value: number) => void;
 }
 
-function LocationDropdown({ locations, onLocationChange }: LocationDropdownProps) {  
+function LocationsDropdown({ locations, onLocationChange }: LocationDropdownProps) {  
   console.log(locations)
   return (
     <select
@@ -28,4 +29,4 @@ function LocationDropdown({ locations, onLocationChange }: LocationDropdownProps
   );
 }
 
-export default LocationDropdown;
+export default LocationsDropdown;

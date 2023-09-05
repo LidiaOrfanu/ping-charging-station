@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import './EditLocation.css';
 import { ChargingStationLocation, ChargingStationLocationRequest, getAllLocations, updateLocationById } from '../api-location';
-import LocationDropdown from './LocationDropdown';
+import LocationsDropdown from './LocationsDropdown';
 
 interface EditLocationFormProps {
     locations: ChargingStationLocation[];
@@ -31,7 +31,7 @@ const EditLocationForm: React.FC<EditLocationFormProps> = ({
     <div className="edit-location-form">
        <h2 className="edit-location-form__title">Edit a location:</h2>
        <div className="edit-location-form__field">
-            <LocationDropdown
+            <LocationsDropdown
               locations={locations}
               onLocationChange={onLocationChange}
             />
