@@ -40,22 +40,40 @@ const EditLocationForm: React.FC<EditLocationFormProps> = ({
       <Formik initialValues={initialValues}
               onSubmit={async (values, { setSubmitting }) => {
                 setSubmitting(true);
-          if (selectedLocation !== null) {
-            try {
-              await updateLocationById(selectedLocation, values as ChargingStationLocationRequest);
-              const updatedLocations = await getAllLocations();
-              setLocations(updatedLocations);
-              setSubmitting(false);
-              onClose();
-            } catch (error) {
-              console.error('Error editing location:', error);
-              setSubmitting(false);
-            }
-          } else {
-            console.error('Error editing location: No location selected');
-            setSubmitting(false);
-          }
-        }}
+                await updateLocationById(selectedLocation, values as ChargingStationLocationRequest)
+                .then(() => {
+                  getAllLocations()
+                    .then(data => {
+                      setLocations(data);
+                      setSubmitting(false);
+                        onClose();
+                    })
+                    .catch(error => {
+                      console.error('Error fetching locations:', error);
+                      setSubmitting(false);
+                    });
+                })
+                .catch(error => {
+                  console.error('Error adding location:', error);
+                  setSubmitting(false);
+                });
+              }}
+        //   if (selectedLocation !== null) {
+        //     try {
+        //       await updateLocationById(selectedLocation, values as ChargingStationLocationRequest);
+        //       const updatedLocations = await getAllLocations();
+        //       setLocations(updatedLocations);
+        //       setSubmitting(false);
+        //       onClose();
+        //     } catch (error) {
+        //       console.error('Error editing location:', error);
+        //       setSubmitting(false);
+        //     }
+        //   } else {
+        //     console.error('Error editing location: No location selected');
+        //     setSubmitting(false);
+        //   }
+        // }}
         >
       {({ handleSubmit }) => (
             <Form onSubmit= {handleSubmit}>
