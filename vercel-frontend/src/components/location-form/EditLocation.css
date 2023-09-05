@@ -12,6 +12,10 @@
     margin: auto;
   }
   
+  .edit-location-form__title {
+    color: #01809a;
+  }
+  
   .edit-location-form__field {
     display: flex;
     align-items: center;
@@ -24,7 +28,7 @@
   
   
   .edit-location-form__input {
-  flex: 3;
+    flex: 3;
   }
   
   .edit-location-form__button-group {
