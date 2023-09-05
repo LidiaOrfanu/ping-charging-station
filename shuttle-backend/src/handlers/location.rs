@@ -10,18 +10,15 @@ use std::sync::Arc;
 use validator::Validate;
 // use validator::Validate;
 
-use crate::models::{self, location::{Location, UpdateLocation}};
+use crate::{models::{self, location::{Location, UpdateLocation}}, db::location::get_all};
 use crate::{models::location::CreateLocation, AppState};
 
 pub async fn handler_get_all_locations(
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    const SQL_QUERY: &str = "SELECT id, street, zip, city, country FROM locations";
-    let existing_locations = query_as::<_, models::location::Location>(SQL_QUERY)
-        .fetch_all(&data.db)
-        .await;
 
-    match existing_locations {
+    let db_clone = data.db.clone();
+    match get_all(db_clone).await {
         Ok(locations) => Ok((StatusCode::OK, Json(locations))),
         Err(e) => {
             let error_response = json!({

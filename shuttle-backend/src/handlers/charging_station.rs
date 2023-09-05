@@ -23,10 +23,7 @@ pub async fn handle_hello() -> &'static str {
 pub async fn handle_get_all_stations(
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    // const QUERY: &str = "SELECT id, name, location_id, availability FROM stations";
-    // let result = query_as::<_, ChargingStation>(QUERY)
-    //     .fetch_all(&data.db)
-    //     .await;
+
     let db_clone = data.db.clone();
     match get_all(db_clone).await {
         Ok(stations) => {
