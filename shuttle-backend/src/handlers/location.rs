@@ -161,8 +161,9 @@ pub async fn handler_edit_location_by_id(
                     location.street = new_street.clone();
                 }
             }
+
             if let Some(new_zip) = body.zip {
-                if !new_zip == 0 {
+                if new_zip != 0 {
                     location.zip = new_zip;
                 }
             }
