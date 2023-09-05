@@ -53,10 +53,11 @@ const EditLocationForm: React.FC<EditLocationFormProps> = ({
             }
           } else {
             console.error('Error editing location: No location selected');
+            setSubmitting(false);
           }
         }}
         >
-      {({ isSubmitting, handleSubmit }) => (
+      {({ handleSubmit }) => (
             <Form onSubmit= {handleSubmit}>
               <div className="edit-location-form__field">
                 <label className="edit-location-form__label">Street:</label>
@@ -87,10 +88,10 @@ const EditLocationForm: React.FC<EditLocationFormProps> = ({
                 />
               </div>
               <div className="edit-location-form__button-group">
-                <button type="submit" className="edit-location-form__submit-button" disabled={isSubmitting}>
+                <button type="submit" className="edit-location-form__submit-button" disabled={selectedLocation === null}>
                   Submit
                 </button>
-                <button onClick={onClose} className="edit-location-form__close-button" disabled={isSubmitting}>
+                <button onClick={onClose} className="edit-location-form__close-button">
                   Cancel
                 </button>
               </div>
