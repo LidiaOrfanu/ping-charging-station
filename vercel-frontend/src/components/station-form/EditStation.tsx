@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Field, Form } from 'formik';
 import './EditStation.css';
-import { ChargingStation, UpdateChargingStationRequest, getAllStations, updateStationById } from '../api-station';
+import { ChargingStation, getAllStations, updateStationById } from '../api-station';
 import StationsDropdown from './StationsDropdown';
 
 interface EditStationFormProps {
@@ -20,9 +20,16 @@ const EditStationForm: React.FC<EditStationFormProps> = ({
     onClose,
 }) => {
 
+    const [availability, setAvailability] = useState(true);
+
   const initialValues = {
     availability: null,
     name: '',
+  };
+
+  const handleAvailabilityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newAvailability = e.target.value === 'true';
+    setAvailability(newAvailability);
   };
 
   return (
@@ -38,7 +45,10 @@ const EditStationForm: React.FC<EditStationFormProps> = ({
       <Formik initialValues={initialValues}
               onSubmit={async (values, { setSubmitting }) => {
                 setSubmitting(true);
-                await updateStationById(selectedStation, values as UpdateChargingStationRequest)
+                await updateStationById(
+                    selectedStation, 
+                    {name: values.name, 
+                    availability: availability})
                 .then(() => {
                   getAllStations()
                     .then(data => {
@@ -68,10 +78,30 @@ const EditStationForm: React.FC<EditStationFormProps> = ({
               </div>
               <div className="edit-station-form__field">
                 <label className="edit-station-form__label">Availability:</label>
-                <Field type="bool"
+                <div className="edit-station-form__radio-group">
+                  <label>
+                    <Field
+                      type="radio"
                       name="availability"
-                      className="edit-station-form__input"
-                />
+                      value="true"
+                      checked={availability === true}
+                      onChange={handleAvailabilityChange}
+                      className="edit-station-form__radio"
+                    />
+                    Available
+                  </label>
+                  <label>
+                    <Field
+                      type="radio"
+                      name="availability"
+                      value="false"
+                      checked={availability === false}
+                      onChange={handleAvailabilityChange}
+                      className="edit-station-form__radio"
+                    />
+                    Not Available
+                  </label>
+                </div>
               </div>
               <div className="edit-station-form__button-group">
                 <button type="submit" className="edit-station-form__submit-button" disabled={selectedStation === null}>

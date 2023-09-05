@@ -28,10 +28,16 @@
   }
   
   
-  .edit-station-form__input {
+  .edit-station-form__input,
+  .edit-station-form__radio-group {
     flex: 3;
   }
   
+  .edit-station-form__radio-group {
+    display: flex;
+    gap: 10px;
+  }
+
   .edit-station-form__button-group {
     display: flex;
     justify-content: center;

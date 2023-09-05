@@ -22,7 +22,7 @@
     padding-right: 10px; 
   }
 
-  .add-station-form__radio-group {
+.add-station-form__radio-group {
     display: flex;
     gap: 10px;
   }
