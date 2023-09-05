@@ -103,10 +103,7 @@ import EditLocationForm from '../location-form/EditLocation';
           )}
 
           {formMode === 'editLocation' && (
-            <EditLocationForm onClose={() => {
-                {handleCloseForm}
-                setSelectedLocation(null);
-              }}
+            <EditLocationForm onClose={handleCloseForm}
               locations={locations}
               selectedLocation={selectedLocation}
               setLocations={setLocations}

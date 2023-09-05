@@ -58,22 +58,6 @@ const EditLocationForm: React.FC<EditLocationFormProps> = ({
                   setSubmitting(false);
                 });
               }}
-        //   if (selectedLocation !== null) {
-        //     try {
-        //       await updateLocationById(selectedLocation, values as ChargingStationLocationRequest);
-        //       const updatedLocations = await getAllLocations();
-        //       setLocations(updatedLocations);
-        //       setSubmitting(false);
-        //       onClose();
-        //     } catch (error) {
-        //       console.error('Error editing location:', error);
-        //       setSubmitting(false);
-        //     }
-        //   } else {
-        //     console.error('Error editing location: No location selected');
-        //     setSubmitting(false);
-        //   }
-        // }}
         >
       {({ handleSubmit }) => (
             <Form onSubmit= {handleSubmit}>
