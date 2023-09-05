@@ -32,21 +32,12 @@ const DeleteLocationForm: React.FC<DeleteLocationFormProps> = ({
         <h2 className="delete-location-form__title">Delete a charging location: </h2>
         <form>
           <div className="delete-location-form__field">
-            <select
-              name="locationToDelete"
-              className="delete-location-form__input"
-              value={selectedLocation || ''}
-              onChange={(e) => {
-                const value = parseInt(e.target.value, 10);
-                onLocationChange(value);
-              }}
-            >
             <LocationDropdown
               locations={locations}
               onLocationChange={onLocationChange}
             />
-            </select>
           </div>
+
           <div className="delete-location-form__button-group">
             <button
               type="button"
