@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChargingStation } from '../api';
+import { ChargingStation } from '../api-station';
 import './DeleteStation.css';
 interface DeleteStationFormProps {
   stations: ChargingStation[];

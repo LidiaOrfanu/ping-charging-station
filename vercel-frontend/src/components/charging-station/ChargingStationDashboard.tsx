@@ -1,11 +1,12 @@
-  import React, { useEffect, useState } from 'react';
-  import './ChargingStationDashboard.css';
-  import { ChargingStation, ChargingStationLocation, deleteLocationById, deleteStationById, getAllLocations, getAllStations } from '../api';
-  import Header from '../header/Header';
-  import DeleteStationForm from '../station-form/DeleteStation';
-  import ChargingStationList from './ChargingStationList';
-  import AddStationForm from '../station-form/AddStation';
-  import AddLocationForm from '../location-form/AddLocation';
+import React, { useEffect, useState } from 'react';
+import './ChargingStationDashboard.css';
+import { ChargingStation, deleteStationById, getAllStations } from '../api-station';
+import Header from '../header/Header';
+import DeleteStationForm from '../station-form/DeleteStation';
+import { ChargingStationLocation, getAllLocations, deleteLocationById } from '../api-location';
+import ChargingStationList from './ChargingStationList';
+import AddStationForm from '../station-form/AddStation';
+import AddLocationForm from '../location-form/AddLocation';
 import DeleteLocationForm from '../location-form/DeleteLocation';
 
   function ChargingStationDashboard() {

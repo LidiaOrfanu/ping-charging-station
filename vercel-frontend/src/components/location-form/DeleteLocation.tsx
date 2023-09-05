@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChargingStationLocation } from '../api';
+import { ChargingStationLocation } from '../api-location';
 import './DeleteLocation.css';
 interface DeleteLocationFormProps {
   locations: ChargingStationLocation[];

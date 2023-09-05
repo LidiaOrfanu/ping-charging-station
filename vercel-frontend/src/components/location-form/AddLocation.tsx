@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import './AddLocation.css';
-import { ChargingStationLocation, ChargingStationLocationRequest, addLocation, getAllLocations } from '../api';
+import { ChargingStationLocation, ChargingStationLocationRequest, addLocation, getAllLocations } from '../api-location';
 
 interface AddLocationFormProps {
   onClose: () => void;

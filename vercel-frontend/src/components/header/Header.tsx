@@ -1,37 +1,35 @@
-import React, { useCallback } from 'react';
+import React, { useState } from 'react';
 import './Header.css';
 
-interface HeaderProps {
-  onAddStationClick?: () => void;
-  onAddLocationClick?: () => void;
-  onDeleteStationClick?: () => void;
-  onDeleteLocationClick?: () => void;
-}
 
-const Header: React.FC<HeaderProps> = ({ onAddStationClick, onDeleteStationClick, onAddLocationClick, onDeleteLocationClick = () => {} }) => {
-  const handleAddStationClick = useCallback(() => {
-    if (onAddStationClick) {
-      onAddStationClick();
-    }
-  }, [onAddStationClick]);
 
-  const handleAddLocationClick = useCallback(() => {
-    if (onAddLocationClick) {
-      onAddLocationClick();
-    }
-  }, [onAddLocationClick]);
-
-  const handleDeleteStationClick  = useCallback(() => {
-    if (onDeleteStationClick) {
-      onDeleteStationClick();
-    }
-  }, [onDeleteStationClick]);
-
-  const handleDeleteLocationClick  = useCallback(() => {
-    if (onDeleteLocationClick) {
-      onDeleteLocationClick();
-    }
-  }, [onDeleteLocationClick]);
+const Header = () => {  const [buttons, ] = useState([
+    {
+      text: 'Add Station',
+      onClick: () => {},
+      type: 'add',
+    },
+    {
+      text: 'Delete Station',
+      onClick: () => {},
+      type: 'delete',
+    },
+    {
+      text: 'Add Location',
+      onClick: () => {},
+      type: 'add',
+    },
+    {
+      text: 'Delete Location',
+      onClick: () => {},
+      type: 'delete',
+    },
+    {
+      text: 'Edit Location',
+      onClick: () => {},
+      type: 'edit',
+    },
+  ]);
 
   return (
     <header className="header">
@@ -39,25 +37,15 @@ const Header: React.FC<HeaderProps> = ({ onAddStationClick, onDeleteStationClick
         <img src="/ping-logo3.png" alt="Logo" className="logo" />
       </div>
       <div>
-      <button onClick={handleAddStationClick} className="add-button">
-        Add Station
-      </button>
-      {/* <button onClick={handleAddStationClick} className="edit-button">
-        Edit Station
-      </button> */}
-      <button onClick={handleDeleteStationClick} className="delete-button">
-        Delete Station
-      </button>
-      <button onClick={handleAddLocationClick} className="add-button">
-        Add Location
-      </button>
-      {/* <button onClick={handleAddStationClick} className="edit-button">
-        Edit Location
-      </button> */}
-      <button onClick={handleDeleteLocationClick} className="delete-button">
-        Delete Location
-      </button>
-
+      {buttons.map((button: { text: string, onClick: () => void, type: string }) => (
+          <button
+            key={button.text}
+            className={`${button.type}-button`}
+            onClick={button.onClick}
+          >
+            {button.text}
+          </button>
+        ))}
       </div>
     </header>
   );

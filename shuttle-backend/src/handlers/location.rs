@@ -156,28 +156,27 @@ pub async fn handler_edit_location_by_id(
         .await;
 
     if let Some(mut location) = existing_location.unwrap() {
-        if let Some(new_street) = body.street {
-            if !new_street.is_empty() {
-                location.street = new_street.clone();
+            if let Some(new_street) = body.street {
+                if !new_street.is_empty() {
+                    location.street = new_street.clone();
+                }
             }
-            location.street = new_street.clone();
-        }
-        if let Some(new_zip) = body.zip {
-            if !new_zip == 0 {
-                location.zip = new_zip;
+            if let Some(new_zip) = body.zip {
+                if !new_zip == 0 {
+                    location.zip = new_zip;
+                }
             }
-            location.zip = new_zip;
-        }
-        if let Some(new_city) = body.city {
-            if !new_city.is_empty() {
-                location.city = new_city.clone();
+            
+            if let Some(new_city) = body.city {
+                if !new_city.is_empty() {
+                    location.city = new_city.clone();
+                }
             }
-        }
-        if let Some(new_country) = body.country {
-            if !new_country.is_empty() {
-                location.country = new_country.clone();
+            if let Some(new_country) = body.country {
+                if !new_country.is_empty() {
+                    location.country = new_country.clone();
+                }
             }
-        }
         let update_sql_query =
             "UPDATE locations SET street = $1, zip = $2, city=$3, country=$4 WHERE id = $5 RETURNING *";
         let updated_station: Result<Location, _> =
