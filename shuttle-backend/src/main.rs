@@ -9,6 +9,7 @@ use tower_http::cors::CorsLayer;
 mod handlers;
 mod models;
 mod routes;
+mod db;
 
 pub struct AppState {
     db: Pool<Postgres>,
