@@ -5,7 +5,7 @@ use sqlx::{query_as, Pool, Postgres};
 use crate::models::location::Location;
 
 pub async fn get_all(db_pool: Pool<Postgres>) -> Result<Vec<Location>, sqlx::Error> {
-    const QUERY: &str = "SELECT id, name, location_id, availability FROM stations";
+    const QUERY: &str = "SELECT id, street, zip, city, country FROM locations";
     query_as::<_, Location>(QUERY).fetch_all(&db_pool).await
 
     // locations
