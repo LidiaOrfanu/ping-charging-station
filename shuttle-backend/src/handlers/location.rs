@@ -39,32 +39,7 @@ pub async fn handler_get_location_by_id(
     Path(id): Path<i32>,
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    // let sql_query = format!("SELECT * FROM locations WHERE id = $1",);
-    // let existing_location = query_as::<_, models::location::Location>(&sql_query)
-    //     .bind(id)
-    //     .fetch_one(&data.db)
-    //     .await;
-
-    // match existing_location {
-    //     Ok(location) => {
-    //         let location_response = json!({
-    //             "status": "success",
-    //             "data": json!({
-    //                 "location": location
-    //             })
-    //         });
-
-    //         return Ok((StatusCode::FOUND, Json(location_response)));
-    //     }
-    //     Err(_) => {
-    //         let error_response = json!({
-    //             "status": "fail",
-    //             "message": format!("Location with ID: {} not found", id)
-    //         });
-
-    //         return Err((StatusCode::NOT_FOUND, Json(error_response)));
-    //     }
-    // }
+    
     match crate::db::location::get_by_id(&data.db, id).await {
         Ok(location) => {
             let location_response = json!({
