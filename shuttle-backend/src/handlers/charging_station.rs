@@ -78,33 +78,11 @@ pub async fn handler_get_station_by_id(
     Path(id): Path<i32>,
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    let query = "SELECT * FROM stations WHERE id = $1".to_string();
-    let query_result = query_as::<_, ChargingStation>(&query)
-        .bind(id)
-        .fetch_one(&data.db)
-        .await;
-    // let query_result = query_as!(ChargingStation, "SELECT * FROM stations WHERE id = $1", id)
-    //     .fetch_one(&data.db)
-    //     .await;
 
-    match query_result {
-        Ok(station) => {
-            let station_response = json!({
-                "status": "success",
-                "data": json!({
-                    "station": station
-                })
-            });
-
-            Ok((StatusCode::FOUND, Json(station_response)))
-        }
-        Err(_) => {
-            let error_response = json!({
-                "status": "fail",
-                "message": format!("Station with ID: {} not found", id)
-            });
-
-            Err((StatusCode::NOT_FOUND, Json(error_response)))
+    match crate::db::charging_station::get_by_id(&data.db, id).await {
+        Ok(station) => Ok((StatusCode::FOUND, Json(station))),
+        Err((status_code, error_response)) => {
+            Err((status_code, error_response))
         }
     }
 }

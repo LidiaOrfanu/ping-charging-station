@@ -41,15 +41,7 @@ pub async fn handler_get_location_by_id(
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
     
     match crate::db::location::get_by_id(&data.db, id).await {
-        Ok(location) => {
-            let location_response = json!({
-                "status": "success",
-                "data": {
-                    "location": location
-                }
-            });
-            Ok((StatusCode::FOUND, Json(location_response)))
-        }
+        Ok(location) =>  Ok((StatusCode::FOUND, Json(location))),
         Err((status_code, error_response)) => {
             Err((status_code, error_response))
         }

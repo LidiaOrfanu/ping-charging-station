@@ -11,6 +11,29 @@ pub async fn get_all(db_pool: Pool<Postgres>) -> Result<Vec<ChargingStation>, sq
         .await
 }
 
+pub async fn get_by_id(
+    db_pool: &Pool<Postgres>,
+    station_id: i32,
+) -> Result<ChargingStation, (StatusCode, Json<Value>)> {
+    const SQL_QUERY: &str = "SELECT * FROM stations WHERE id = $1";
+
+    let station = query_as::<_, ChargingStation>(SQL_QUERY)
+        .bind(station_id)
+        .fetch_one(db_pool)
+        .await
+        .map_err(|_e| {
+            (
+                StatusCode::BAD_REQUEST,
+                Json(json!({
+                    "status": "error",
+                    "message": format!("Station with ID: {} not found", station_id)
+                })),
+            )
+        })?;
+
+    Ok(station)
+}
+
 pub async fn check_station_name_existence(
     db_pool: &Pool<Postgres>,
     name: String,
