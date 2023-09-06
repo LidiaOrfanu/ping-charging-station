@@ -41,7 +41,7 @@ pub async fn insert_new_station(
     availability: bool,
 ) -> Result<ChargingStation, sqlx::Error> {
     const SQL_QUERY: &str = "INSERT INTO stations (name, location_id, availability)
-                            VALUES ('{}', '{}', {})
+                            VALUES ($1, $2, $3))
                             RETURNING *";
 
     let new_station = query_as::<_, ChargingStation>(SQL_QUERY)

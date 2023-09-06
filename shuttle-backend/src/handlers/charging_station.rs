@@ -48,23 +48,6 @@ pub async fn handle_post_a_station(
         return Err((StatusCode::BAD_REQUEST, Json(error_response)));
     }
 
-    // let db_clone = data.db.clone();
-
-    // let sql_query_existing_station = format!("SELECT * FROM stations WHERE name = $1");
-    // let existing_station = query_as::<_, ChargingStation>(&sql_query_existing_station)
-    //     .bind(&body.name)
-    //     .fetch_optional(&data.db)
-    //     .await
-    //     .unwrap();
-
-    // if let Some(_) = existing_station {
-    //     let error_response = json!({
-    //         "status": "fail",
-    //         "message": "Station with that name already exists",
-    //     });
-    //     return Err((StatusCode::CONFLICT, Json(error_response)));
-    // }
-
     if check_station_name_existence(&data.db, body.name.clone()).await? {
         let error_response = json!({
             "status": "fail",
@@ -73,21 +56,6 @@ pub async fn handle_post_a_station(
         return Err((StatusCode::CONFLICT, Json(error_response)));
     }
 
-    // let sql_query_location = "SELECT * FROM locations WHERE id = $1";
-    // let location = query_as::<_, Location>(&sql_query_location)
-    //     .bind(&body.location_id)
-    //     .fetch_one(&data.db)
-    //     .await
-    //     .map_err(|e| {
-    //         (
-    //             StatusCode::BAD_REQUEST,
-    //             Json(json!({
-    //                 "status": "error",
-    //                 "message": format!("Invalid location_id: {:?}", e)
-    //             })),
-    //         )
-    //     })?;
-
     let location = match crate::db::location::get_by_id(&data.db, body.location_id).await {
         Ok(location) => location,
         Err((status_code, error_response)) => {
@@ -95,54 +63,8 @@ pub async fn handle_post_a_station(
         }
     };
 
-    // let availability_value = if body.availability { true } else { false };
-    // let query = format!(
-    //     "INSERT INTO stations (name, location_id, availability) VALUES ('{}', '{}', {}) RETURNING *",
-    //     body.name, location.id, availability_value
-    // );
-
-    // let query_result = query_as::<_, ChargingStation>(&query)
-    //     .fetch_one(&data.db)
-    //     .await;
-
-    // match query_result {
-    //     Ok(station) => {
-    //         let station_response = json!({
-    //             "status": "success",
-    //             "data": {
-    //                 "station": {
-    //                     "id": station.id,
-    //                     "name": station.name,
-    //                     "location_id": station.location_id,
-    //                     "availability": station.availability
-    //                 }
-    //             }
-    //         });
-    //         return Ok((StatusCode::CREATED, Json(station_response)));
-    //     }
-    //     Err(e) => {
-    //         return Err((
-    //             StatusCode::INTERNAL_SERVER_ERROR,
-    //             Json(json!({"status": "error","message": format!("{:?}", e)})),
-    //         ));
-    //     }
-    // }
     match insert_new_station(&data.db, body.name, location.id, body.availability).await {
         Ok(station) => Ok((StatusCode::CREATED, Json(station))),
-        // {
-        // let station_response = json!({
-        //     "status": "success",
-        //     "data": {
-        //         "station": {
-        //             "id": station.id,
-        //             "name": station.name,
-        //             "location_id": station.location_id,
-        //             "availability": station.availability
-        //         }
-        //     }
-        // });
-        // return Ok((StatusCode::CREATED, Json(station)));
-        // }
         Err(e) => {
             Err((
                 StatusCode::INTERNAL_SERVER_ERROR,
