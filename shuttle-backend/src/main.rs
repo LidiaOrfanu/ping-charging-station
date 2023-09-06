@@ -6,10 +6,10 @@ use axum::http::{
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use std::sync::Arc;
 use tower_http::cors::CorsLayer;
+mod db;
 mod handlers;
 mod models;
 mod routes;
-mod db;
 
 pub struct AppState {
     db: Pool<Postgres>,

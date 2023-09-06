@@ -23,7 +23,7 @@ pub struct CreateLocation {
 }
 
 #[derive(Debug, Deserialize, Serialize, sqlx::FromRow, Validate)]
-pub struct UpdateLocation  {
+pub struct UpdateLocation {
     #[validate(length(min = 3, max = 35))]
     pub street: Option<String>,
     pub zip: Option<i32>,
