@@ -4,9 +4,22 @@ use sqlx::{query, query_as, Pool, Postgres};
 
 use crate::models::location::{CreateLocation, Location, UpdateLocation};
 
-pub async fn get_all(db_pool: Pool<Postgres>) -> Result<Vec<Location>, sqlx::Error> {
+pub async fn get_all(db_pool: &Pool<Postgres>) -> Result<Vec<Location>, (StatusCode, Json<Value>)> {
     const QUERY: &str = "SELECT id, street, zip, city, country FROM locations";
-    query_as::<_, Location>(QUERY).fetch_all(&db_pool).await
+    let locations = query_as::<_, Location>(QUERY)
+        .fetch_all(db_pool)
+        .await
+        .map_err(|e| {
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({
+                    "status": "error",
+                    "message": format!("Error retrieving locations: {:?}", e)
+                })),
+            )
+        })?;
+
+    Ok(locations)
 }
 
 pub async fn get_by_id(

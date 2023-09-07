@@ -15,23 +15,15 @@ use crate::{
 };
 
 pub async fn handle_hello() {
-    "Hello, Lalalala!".to_string();
+    "Hello World!".to_string();
 }
 
 pub async fn handle_get_all_stations(
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    let db_clone = data.db.clone();
-
-    match get_all(db_clone).await {
+    match get_all(&data.db).await {
         Ok(stations) => Ok((StatusCode::OK, Json(stations))),
-        Err(e) => {
-            let error_response = json!({
-                "status": "error",
-                "message": format!("Error retrieving stations: {:?}", e)
-            });
-            Err((StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)))
-        }
+        Err((status_code, error_response)) => Err((status_code, error_response)),
     }
 }
 

@@ -4,11 +4,25 @@ use sqlx::{query, query_as, Pool, Postgres};
 
 use crate::models::charging_station::{ChargingStation, UpdateChargingStation};
 
-pub async fn get_all(db_pool: Pool<Postgres>) -> Result<Vec<ChargingStation>, sqlx::Error> {
+pub async fn get_all(
+    db_pool: &Pool<Postgres>,
+) -> Result<Vec<ChargingStation>, (StatusCode, Json<Value>)> {
     const SQL_QUERY: &str = "SELECT id, name, location_id, availability FROM stations";
-    query_as::<_, ChargingStation>(SQL_QUERY)
-        .fetch_all(&db_pool)
+
+    let stations = query_as::<_, ChargingStation>(SQL_QUERY)
+        .fetch_all(db_pool)
         .await
+        .map_err(|e| {
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({
+                    "status": "error",
+                    "message": format!("Error retrieving stations: {:?}", e)
+                })),
+            )
+        })?;
+
+    Ok(stations)
 }
 
 pub async fn get_by_id(
