@@ -5,13 +5,12 @@ use axum::{
     Json,
 };
 use serde_json::{json, Value};
-use sqlx::{query, query_as};
 use std::sync::Arc;
 use validator::Validate;
 
 use crate::{
     db::charging_station::{check_station_name_existence, get_all, insert_new_station},
-    models::charging_station::{ChargingStation, CreateChargingStation, UpdateChargingStation},
+    models::charging_station::{CreateChargingStation, UpdateChargingStation},
     AppState,
 };
 
@@ -31,6 +30,46 @@ pub async fn handle_get_all_stations(
                 "status": "error",
                 "message": format!("Error retrieving stations: {:?}", e)
             });
+            Err((StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)))
+        }
+    }
+}
+
+pub async fn handler_get_station_by_id(
+    Path(id): Path<i32>,
+    State(data): State<Arc<AppState>>,
+) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
+    match crate::db::charging_station::get_by_id(&data.db, id).await {
+        Ok(station) => Ok((StatusCode::FOUND, Json(station))),
+        Err((status_code, error_response)) => Err((status_code, error_response)),
+    }
+}
+
+pub async fn handler_delete_station_by_id(
+    Path(id): Path<String>,
+    State(data): State<Arc<AppState>>,
+) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
+    let id = id.trim().parse::<i32>().unwrap();
+
+    match crate::db::charging_station::delete_by_id(&data.db, id).await {
+        Ok(rows_affected) => {
+            if rows_affected == 0 {
+                let error_response = json!({
+                    "status": "fail",
+                    "message": format!("Station with ID: {} not found", id)
+                });
+
+                return Err((StatusCode::NOT_FOUND, Json(error_response)));
+            }
+
+            Ok(StatusCode::NO_CONTENT)
+        }
+        Err(_) => {
+            let error_response = json!({
+                "status": "error",
+                "message": "Failed to delete station"
+            });
+
             Err((StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)))
         }
     }
@@ -65,100 +104,72 @@ pub async fn handle_post_a_station(
 
     match insert_new_station(&data.db, body.name, location.id, body.availability).await {
         Ok(station) => Ok((StatusCode::CREATED, Json(station))),
-        Err(e) => {
-            Err((
-                StatusCode::INTERNAL_SERVER_ERROR,
-                Json(json!({"status": "error","message": format!("{:?}", e)})),
-            ))
-        }
+        Err(e) => Err((
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({"status": "error","message": format!("{:?}", e)})),
+        )),
     }
 }
 
-pub async fn handler_get_station_by_id(
-    Path(id): Path<i32>,
-    State(data): State<Arc<AppState>>,
-) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
+// pub async fn handler_edit_station_by_id(
+//     Path(id): Path<i32>,
+//     State(data): State<Arc<AppState>>,
+//     Json(body): Json<UpdateChargingStation>,
+// ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
+//     let sql_query = "SELECT * FROM stations WHERE id = $1";
+//     let existing_station = query_as::<_, ChargingStation>(sql_query)
+//         .bind(id)
+//         .fetch_optional(&data.db)
+//         .await;
 
-    match crate::db::charging_station::get_by_id(&data.db, id).await {
-        Ok(station) => Ok((StatusCode::FOUND, Json(station))),
-        Err((status_code, error_response)) => {
-            Err((status_code, error_response))
-        }
-    }
-}
+//     if let Some(mut station) = existing_station.unwrap() {
+//         if let Some(new_name) = &body.name {
+//             if !new_name.is_empty() {
+//                 station.name = new_name.clone();
+//             }
+//         }
+//         if let Some(new_availability) = body.availability {
+//             if new_availability == true || new_availability == false {
+//                 station.availability = new_availability;
+//             }
+//         }
+
+//         let update_sql_query =
+//             "UPDATE stations SET name = $1, availability = $2 WHERE id = $3 RETURNING *";
+//         let updated_station: Result<ChargingStation, _> =
+//             query_as::<_, ChargingStation>(update_sql_query)
+//                 .bind(station.name)
+//                 .bind(station.availability)
+//                 .bind(id)
+//                 .fetch_one(&data.db)
+//                 .await;
+
+//         match updated_station {
+//             Ok(updated) => Ok((StatusCode::OK, Json(updated))),
+//             Err(err) => {
+//                 let error_response = json!({
+//                     "status": "error",
+//                     "message": format!("{:?}", err)
+//                 });
+//                 Err((StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)))
+//             }
+//         }
+//     } else {
+//         let error_response = json!({
+//             "status": "fail",
+//             "message": format!("Station with ID: {} not found", id)
+//         });
+//         Err((StatusCode::NOT_FOUND, Json(error_response)))
+//     }
+// }
 
 pub async fn handler_edit_station_by_id(
     Path(id): Path<i32>,
     State(data): State<Arc<AppState>>,
     Json(body): Json<UpdateChargingStation>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    let sql_query = "SELECT * FROM stations WHERE id = $1";
-    let existing_station = query_as::<_, ChargingStation>(sql_query)
-        .bind(id)
-        .fetch_optional(&data.db)
-        .await;
-
-    if let Some(mut station) = existing_station.unwrap() {
-        if let Some(new_name) = &body.name {
-            if !new_name.is_empty() {
-                station.name = new_name.clone();
-            }
-        }
-        if let Some(new_availability) = body.availability {
-            if new_availability == true || new_availability == false {
-                station.availability = new_availability;
-            }
-        }
-
-        let update_sql_query =
-            "UPDATE stations SET name = $1, availability = $2 WHERE id = $3 RETURNING *";
-        let updated_station: Result<ChargingStation, _> =
-            query_as::<_, ChargingStation>(update_sql_query)
-                .bind(station.name)
-                .bind(station.availability)
-                .bind(id)
-                .fetch_one(&data.db)
-                .await;
-
-        match updated_station {
-            Ok(updated) => Ok((StatusCode::OK, Json(updated))),
-            Err(err) => {
-                let error_response = json!({
-                    "status": "error",
-                    "message": format!("{:?}", err)
-                });
-                Err((StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)))
-            }
-        }
-    } else {
-        let error_response = json!({
-            "status": "fail",
-            "message": format!("Station with ID: {} not found", id)
-        });
-        Err((StatusCode::NOT_FOUND, Json(error_response)))
+    match crate::db::charging_station::edit_by_id(&data.db, id, &body).await {
+        Ok(updated_station) => Ok((StatusCode::OK, Json(updated_station))),
+        Err((status_code, error_response)) => Err((status_code, error_response)),
     }
-}
-
-pub async fn handler_delete_station_by_id(
-    Path(id): Path<String>,
-    State(data): State<Arc<AppState>>,
-) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    let id = id.trim().parse::<i32>().unwrap();
-    let rows_affected = query("DELETE FROM stations WHERE id = $1")
-        .bind(id)
-        .execute(&data.db)
-        .await
-        .unwrap()
-        .rows_affected();
-
-    if rows_affected == 0 {
-        let error_response = json!({
-            "status": "fail",
-            "message": format!("Station with ID: {} not found", id)
-        });
-
-        return Err((StatusCode::NOT_FOUND, Json(error_response)));
-    }
-
-    Ok(StatusCode::NO_CONTENT)
 }

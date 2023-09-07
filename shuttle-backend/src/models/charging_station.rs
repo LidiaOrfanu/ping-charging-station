@@ -8,6 +8,16 @@ pub struct ChargingStation {
     pub availability: bool,
 }
 
+impl ChargingStation {
+    pub fn update_name(&mut self, new_name: String) {
+        self.name = new_name;
+    }
+
+    pub fn update_availability(&mut self, new_availability: bool) {
+        self.availability = new_availability;
+    }
+}
+
 #[derive(Debug, Deserialize, Serialize, sqlx::FromRow, Validate)]
 pub struct CreateChargingStation {
     #[validate(length(min = 3, max = 35))]

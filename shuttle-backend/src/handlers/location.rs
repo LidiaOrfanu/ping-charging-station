@@ -5,7 +5,7 @@ use axum::{
     Json,
 };
 use serde_json::{json, Value};
-use sqlx::{query, query_as};
+use sqlx::query_as;
 use std::sync::Arc;
 use validator::Validate;
 // use validator::Validate;
@@ -39,12 +39,9 @@ pub async fn handler_get_location_by_id(
     Path(id): Path<i32>,
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    
     match crate::db::location::get_by_id(&data.db, id).await {
-        Ok(location) =>  Ok((StatusCode::FOUND, Json(location))),
-        Err((status_code, error_response)) => {
-            Err((status_code, error_response))
-        }
+        Ok(location) => Ok((StatusCode::FOUND, Json(location))),
+        Err((status_code, error_response)) => Err((status_code, error_response)),
     }
 }
 
@@ -108,23 +105,29 @@ pub async fn handler_delete_location_by_id(
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
     let id = id.trim().parse::<i32>().unwrap();
-    let rows_affected = query("DELETE FROM locations WHERE id = $1")
-        .bind(id)
-        .execute(&data.db)
-        .await
-        .unwrap()
-        .rows_affected();
 
-    if rows_affected == 0 {
-        let error_response = json!({
-            "status": "fail",
-            "message": format!("Location with ID: {} not found", id)
-        });
+    match crate::db::location::delete_by_id(&data.db, id).await {
+        Ok(rows_affected) => {
+            if rows_affected == 0 {
+                let error_response = json!({
+                    "status": "fail",
+                    "message": format!("Location with ID: {} not found", id)
+                });
 
-        return Err((StatusCode::NOT_FOUND, Json(error_response)));
+                return Err((StatusCode::NOT_FOUND, Json(error_response)));
+            }
+
+            Ok(StatusCode::NO_CONTENT)
+        }
+        Err(_) => {
+            let error_response = json!({
+                "status": "error",
+                "message": "Failed to delete location"
+            });
+
+            Err((StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)))
+        }
     }
-
-    Ok(StatusCode::NO_CONTENT)
 }
 
 pub async fn handler_edit_location_by_id(
