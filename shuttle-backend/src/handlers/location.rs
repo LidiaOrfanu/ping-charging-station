@@ -5,17 +5,13 @@ use axum::{
     Json,
 };
 use serde_json::{json, Value};
-use sqlx::query_as;
 use std::sync::Arc;
 use validator::Validate;
 // use validator::Validate;
 
 use crate::{
     db::location::{get_all, insert_new_location},
-    models::{
-        self,
-        location::{Location, UpdateLocation},
-    },
+    models::location::UpdateLocation,
 };
 use crate::{models::location::CreateLocation, AppState};
 
@@ -58,7 +54,7 @@ pub async fn handler_post_a_location(
     }
 
     match insert_new_location(&data.db, body).await {
-    Ok(location) => Ok((StatusCode::CREATED, Json(location))),
+        Ok(location) => Ok((StatusCode::CREATED, Json(location))),
         Err(e) => {
             if e.to_string()
                 .contains("duplicate key value violates unique constraint")
@@ -76,7 +72,6 @@ pub async fn handler_post_a_location(
         }
     }
 }
-
 
 pub async fn handler_delete_location_by_id(
     Path(id): Path<String>,
@@ -177,7 +172,6 @@ pub async fn handler_edit_location_by_id(
     State(data): State<Arc<AppState>>,
     Json(body): Json<UpdateLocation>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    
     match crate::db::location::edit_by_id(&data.db, id, &body).await {
         Ok(updated_station) => Ok((StatusCode::OK, Json(updated_station))),
         Err((status_code, error_response)) => Err((status_code, error_response)),

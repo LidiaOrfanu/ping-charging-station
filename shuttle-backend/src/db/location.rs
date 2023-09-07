@@ -2,7 +2,7 @@ use axum::{http::StatusCode, Json};
 use serde_json::{json, Value};
 use sqlx::{query, query_as, Pool, Postgres};
 
-use crate::models::location::{Location, CreateLocation, UpdateLocation};
+use crate::models::location::{CreateLocation, Location, UpdateLocation};
 
 pub async fn get_all(db_pool: Pool<Postgres>) -> Result<Vec<Location>, sqlx::Error> {
     const QUERY: &str = "SELECT id, street, zip, city, country FROM locations";
@@ -46,9 +46,7 @@ pub async fn insert_new_location(
     db_pool: &Pool<Postgres>,
     body: CreateLocation,
 ) -> Result<Location, sqlx::Error> {
-
-    const SQL_QUERY: &str = 
-        "INSERT INTO locations (street, zip, city, country) 
+    const SQL_QUERY: &str = "INSERT INTO locations (street, zip, city, country) 
         VALUES ($1, $2, $3, $4) 
         RETURNING *";
 
@@ -60,7 +58,7 @@ pub async fn insert_new_location(
         .fetch_one(db_pool)
         .await?;
 
-        Ok(new_location)
+    Ok(new_location)
 }
 
 pub async fn edit_by_id(
@@ -71,15 +69,14 @@ pub async fn edit_by_id(
     let mut existing_location = get_by_id(db_pool, id).await?;
 
     existing_location.update_street(body.street.clone());
-    existing_location.update_zip(body.zip.clone());
+    existing_location.update_zip(body.zip);
     existing_location.update_city(body.city.clone());
     existing_location.update_country(body.country.clone());
 
-    const UPDATE_SQL_QUERY: &str =
-        "UPDATE stations SET name = $1, availability = $2
+    const UPDATE_SQL_QUERY: &str = "UPDATE stations SET name = $1, availability = $2
         WHERE id = $3 
         RETURNING *";
-    
+
     let updated_location: Location = query_as::<_, Location>(UPDATE_SQL_QUERY)
         .bind(existing_location.street)
         .bind(existing_location.zip)

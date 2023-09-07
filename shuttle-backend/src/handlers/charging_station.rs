@@ -116,7 +116,6 @@ pub async fn handler_edit_station_by_id(
     State(data): State<Arc<AppState>>,
     Json(body): Json<UpdateChargingStation>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-    
     match crate::db::charging_station::edit_by_id(&data.db, id, &body).await {
         Ok(updated_station) => Ok((StatusCode::OK, Json(updated_station))),
         Err((status_code, error_response)) => Err((status_code, error_response)),
