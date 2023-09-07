@@ -81,11 +81,20 @@ pub async fn edit_by_id(
     let updated_location: Location = query_as::<_, Location>(UPDATE_SQL_QUERY)
         .bind(existing_location.street)
         .bind(existing_location.zip)
+        .bind(existing_location.city)
         .bind(existing_location.country)
         .bind(id)
         .fetch_one(db_pool)
         .await
-        .unwrap();
+        .map_err(|_e| {
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({
+                    "status": "error",
+                    "message": "Failed to update location here",
+                })),
+            )
+        })?;
 
     Ok(updated_location)
 }
