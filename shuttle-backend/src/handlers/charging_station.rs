@@ -111,63 +111,12 @@ pub async fn handle_post_a_station(
     }
 }
 
-// pub async fn handler_edit_station_by_id(
-//     Path(id): Path<i32>,
-//     State(data): State<Arc<AppState>>,
-//     Json(body): Json<UpdateChargingStation>,
-// ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
-//     let sql_query = "SELECT * FROM stations WHERE id = $1";
-//     let existing_station = query_as::<_, ChargingStation>(sql_query)
-//         .bind(id)
-//         .fetch_optional(&data.db)
-//         .await;
-
-//     if let Some(mut station) = existing_station.unwrap() {
-//         if let Some(new_name) = &body.name {
-//             if !new_name.is_empty() {
-//                 station.name = new_name.clone();
-//             }
-//         }
-//         if let Some(new_availability) = body.availability {
-//             if new_availability == true || new_availability == false {
-//                 station.availability = new_availability;
-//             }
-//         }
-
-//         let update_sql_query =
-//             "UPDATE stations SET name = $1, availability = $2 WHERE id = $3 RETURNING *";
-//         let updated_station: Result<ChargingStation, _> =
-//             query_as::<_, ChargingStation>(update_sql_query)
-//                 .bind(station.name)
-//                 .bind(station.availability)
-//                 .bind(id)
-//                 .fetch_one(&data.db)
-//                 .await;
-
-//         match updated_station {
-//             Ok(updated) => Ok((StatusCode::OK, Json(updated))),
-//             Err(err) => {
-//                 let error_response = json!({
-//                     "status": "error",
-//                     "message": format!("{:?}", err)
-//                 });
-//                 Err((StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)))
-//             }
-//         }
-//     } else {
-//         let error_response = json!({
-//             "status": "fail",
-//             "message": format!("Station with ID: {} not found", id)
-//         });
-//         Err((StatusCode::NOT_FOUND, Json(error_response)))
-//     }
-// }
-
 pub async fn handler_edit_station_by_id(
     Path(id): Path<i32>,
     State(data): State<Arc<AppState>>,
     Json(body): Json<UpdateChargingStation>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
+    
     match crate::db::charging_station::edit_by_id(&data.db, id, &body).await {
         Ok(updated_station) => Ok((StatusCode::OK, Json(updated_station))),
         Err((status_code, error_response)) => Err((status_code, error_response)),
