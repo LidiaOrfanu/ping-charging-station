@@ -73,8 +73,9 @@ pub async fn edit_by_id(
     existing_location.update_city(body.city.clone());
     existing_location.update_country(body.country.clone());
 
-    const UPDATE_SQL_QUERY: &str = "UPDATE stations SET name = $1, availability = $2
-        WHERE id = $3 
+    const UPDATE_SQL_QUERY: &str =
+        "UPDATE locations SET street = $1, zip = $2, city=$3, country=$4 
+        WHERE id = $5 
         RETURNING *";
 
     let updated_location: Location = query_as::<_, Location>(UPDATE_SQL_QUERY)
