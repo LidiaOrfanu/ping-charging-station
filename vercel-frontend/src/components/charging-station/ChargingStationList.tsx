@@ -18,9 +18,15 @@ function ChargingStationList({ stations, locations }: StationListProps) {
       </div>
       {stations.map(station => (
         <div className="station-item" key={station.id}>
-          <span className={`status ${station.availability ? 'available' : 'not-available'}`}>
+          {/* <span className={`status ${station.availability ? 'available' : 'not-available'}`}>
             {station.availability ? 'Available' : 'Not Available'}
-          </span>
+          </span> */}
+          <div className="status-container">
+            {/* Use the circle class with dynamic classNames */}
+            <span className={`status-circle ${station.availability ? 'available' : 'not-available'}`} />
+            {/* Text immediately after the circle */}
+            <span className="status-text">{station.availability ? 'Available' : 'Not Available'}</span>
+          </div>
           <span className="station-name">{station.name}</span>
           <span className="address">
           {station.location_id !== null ? (

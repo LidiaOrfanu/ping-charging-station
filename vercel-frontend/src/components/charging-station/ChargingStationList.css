@@ -40,11 +40,23 @@ body {
     padding: 0;
   }
 
-  .available {
+  .status-circle {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  .status-circle.available {
     background-color: lightgreen;
   }
   
-  .not-available {
+  .status-circle.not-available {
     background-color: lightcoral; 
   }
   
+  .status-text {
+    color: white;
+  }
