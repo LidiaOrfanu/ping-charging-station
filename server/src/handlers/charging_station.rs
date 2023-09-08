@@ -14,10 +14,6 @@ use crate::{
     AppState,
 };
 
-pub async fn handle_hello() {
-    "Hello World!".to_string();
-}
-
 pub async fn handle_get_all_stations(
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
