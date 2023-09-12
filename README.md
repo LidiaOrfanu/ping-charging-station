@@ -48,8 +48,9 @@ GET, DELETE, PATCH station by id: <https://ping-charging-station.shuttleapp.rs/a
 
 POST station: <https://ping-charging-station.shuttleapp.rs/api/stations>  
 
-```json
 Request:  
+
+```json
 {  
  "name": "StationX",  
  "location_id": 1,  
@@ -60,8 +61,9 @@ Request:
 Headers:  
 Content-Type: application/json  
 
-```json
 Response:  
+
+```json
 {  
  "data": {  
   "station": {  
@@ -77,8 +79,9 @@ Response:
 
 POST location: <https://ping-charging-station.shuttleapp.rs/api/locations>  
 
-```json
 Request:  
+
+```json
 {  
   "street": "Penguins Land",  
   "zip": 1232,  
@@ -90,8 +93,9 @@ Request:
 Headers:  
 Content-Type: application/json  
 
-```json
 Response:  
+
+```json
 {  
  "data": {  
   "location": {  
@@ -109,24 +113,27 @@ Response:
 PATCH station: <https://ping-charging-station.shuttleapp.rs/api/station/3>  
 Can update only availability/only name or both  
 
-```json
 Request:  
+
+```json
 {  
     "availability": false,  
     "name":"Ping-X"  
 }  
 ```
 
-```json
 Request:  
+
+```json
 {  
     "availability": true,  
     "name":""  
 }  
 ```
 
-```json
 Response:  
+
+```json
 {  
     "id": 3,  
     "name": "Ping-X",  
@@ -138,8 +145,9 @@ Response:
 PATCH location example: <https://ping-charging-station.shuttleapp.rs/api/location/2>  
 Can update either all the fields or optional ones: only street/zip/city/country  
 
-```json
 Request:  
+
+```json
 {  
     "street": "Lustgårdsgatan 19",  
     "zip": 11251,  
@@ -148,8 +156,9 @@ Request:
 }  
 ```
 
-```json
 Response:  
+
+```json
 {  
     "id": 2,  
     "street": "Lustgårdsgatan 19",  
