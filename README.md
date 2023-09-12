@@ -17,19 +17,19 @@ It provides essential functionalities for administrators: add, edit, and delete 
 
 ## Deployment
 
-Vercel for the frontend: <https://ping-charging-station.vercel.app>  
-Shuttle for the backend: <https://ping-charging-station.shuttleapp.rs/api/stations>  
-Supabase(PostgreSQL) for the database hosting  
+- **Frontend:** Vercel [https://ping-charging-station.vercel.app](https://ping-charging-station.vercel.app)
+- **Backend:** Shuttle [https://ping-charging-station.shuttleapp.rs/api/stations](https://ping-charging-station.shuttleapp.rs/api/stations)
+- **Database Hosting:** Supabase (PostgreSQL)
 
 ## Setup
 
-Charging Stations table:
+**Charging Stations table:**
 
 - station name
 - status(availability)
 - location id
 
-Locations table:
+**Locations table:**
 
 - street
 - zip
@@ -47,6 +47,8 @@ GET, DELETE, PATCH location by id: <https://ping-charging-station.shuttleapp.rs/
 GET, DELETE, PATCH station by id: <https://ping-charging-station.shuttleapp.rs/api/station/2>  
 
 POST station: <https://ping-charging-station.shuttleapp.rs/api/stations>  
+
+```json
 Request:  
 {  
  "name": "StationX",  
@@ -55,7 +57,8 @@ Request:
 }  
 Headers:  
 Content-Type: application/json  
-  
+
+```json
 Response:  
 {  
  "data": {  
@@ -70,6 +73,7 @@ Response:
 }  
   
 POST location: <https://ping-charging-station.shuttleapp.rs/api/locations>  
+```json
 Request:  
 {  
   "street": "Penguins Land",  
@@ -79,7 +83,7 @@ Request:
 }  
 Headers:  
 Content-Type: application/json  
-  
+```json
 Response:  
 {  
  "data": {  
@@ -96,19 +100,19 @@ Response:
   
 PATCH station: <https://ping-charging-station.shuttleapp.rs/api/station/3>  
 Can update only availability/only name or both  
-  
+```json
 Request:  
 {  
     "availability": false,  
     "name":"Ping-X"  
 }  
-  
+```json 
 Request:  
 {  
     "availability": true,  
     "name":""  
 }  
-  
+```json
 Response:  
 {  
     "id": 3,  
@@ -119,22 +123,23 @@ Response:
   
 PATCH location example: <https://ping-charging-station.shuttleapp.rs/api/location/2>  
 Can update either all the fields or optional ones: only street/zip/city/country  
-Request:  
-{  
-    "street": "Lustgårdsgatan 19",  
-    "zip": 11251,  
-    "city": "Stockholm",  
-    "country": "Sweden"  
-}  
+# Request
 
-Response:  
-{  
-    "id": 2,  
-    "street": "Lustgårdsgatan 19",  
-    "zip": 11251,  
-    "city": "Stockholm",  
-    "country": "Sweden"  
-}  
+{
+  `street`: "Lustgårdsgatan 19",
+  `zip`: 11251,
+  `city`: "Stockholm",
+  `country`: "Sweden"
+}
+# Response
+
+{
+  `id`: 2,
+  `street`: "Lustgårdsgatan 19",
+  `zip`: 11251,
+  `city`: "Stockholm",
+  `country`: "Sweden"
+}
 
 ## Notes
 
