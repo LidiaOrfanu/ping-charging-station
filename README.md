@@ -55,6 +55,8 @@ Request:
  "location_id": 1,  
  "availability": false  
 }  
+```
+
 Headers:  
 Content-Type: application/json  
 
@@ -71,8 +73,10 @@ Response:
  },  
  "status": "success"  
 }  
-  
+```
+
 POST location: <https://ping-charging-station.shuttleapp.rs/api/locations>  
+
 ```json
 Request:  
 {  
@@ -81,8 +85,11 @@ Request:
   "city": "NoCity",  
   "country": "Antarctica"  
 }  
+```
+
 Headers:  
 Content-Type: application/json  
+
 ```json
 Response:  
 {  
@@ -97,21 +104,27 @@ Response:
  },  
  "status": "success"  
 }  
-  
+```
+
 PATCH station: <https://ping-charging-station.shuttleapp.rs/api/station/3>  
 Can update only availability/only name or both  
+
 ```json
 Request:  
 {  
     "availability": false,  
     "name":"Ping-X"  
 }  
-```json 
+```
+
+```json
 Request:  
 {  
     "availability": true,  
     "name":""  
 }  
+```
+
 ```json
 Response:  
 {  
@@ -120,26 +133,31 @@ Response:
     "location_id": 10,  
     "availability": true  
 }  
-  
+```
+
 PATCH location example: <https://ping-charging-station.shuttleapp.rs/api/location/2>  
 Can update either all the fields or optional ones: only street/zip/city/country  
-# Request
 
-{
-  `street`: "Lustgårdsgatan 19",
-  `zip`: 11251,
-  `city`: "Stockholm",
-  `country`: "Sweden"
-}
-# Response
+```json
+Request:  
+{  
+    "street": "Lustgårdsgatan 19",  
+    "zip": 11251,  
+    "city": "Stockholm",  
+    "country": "Sweden"  
+}  
+```
 
-{
-  `id`: 2,
-  `street`: "Lustgårdsgatan 19",
-  `zip`: 11251,
-  `city`: "Stockholm",
-  `country`: "Sweden"
-}
+```json
+Response:  
+{  
+    "id": 2,  
+    "street": "Lustgårdsgatan 19",  
+    "zip": 11251,  
+    "city": "Stockholm",  
+    "country": "Sweden"  
+}  
+```
 
 ## Notes
 
