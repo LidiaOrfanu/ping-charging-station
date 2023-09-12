@@ -46,7 +46,7 @@ GET all stations: <https://ping-charging-station.shuttleapp.rs/api/stations>
 GET, DELETE, PATCH location by id: <https://ping-charging-station.shuttleapp.rs/api/location/2>  
 GET, DELETE, PATCH station by id: <https://ping-charging-station.shuttleapp.rs/api/station/2>  
 
-POST station: <https://ping-charging-station.shuttleapp.rs/api/station>  
+POST station: <https://ping-charging-station.shuttleapp.rs/api/stations>  
 Request:  
 {  
  "name": "StationX",  
@@ -69,7 +69,7 @@ Response:
  "status": "success"  
 }  
   
-POST location: <https://ping-charging-station.shuttleapp.rs/api/location>  
+POST location: <https://ping-charging-station.shuttleapp.rs/api/locations>  
 Request:  
 {  
   "street": "Penguins Land",  

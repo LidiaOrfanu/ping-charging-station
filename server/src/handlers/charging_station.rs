@@ -15,7 +15,7 @@ use crate::{
 };
 
 pub async fn handle_get_all_stations(
-    State(data): State<Arc<AppState>>,
+    data: State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<Value>)> {
     match get_all(&data.db).await {
         Ok(stations) => Ok((StatusCode::OK, Json(stations))),
