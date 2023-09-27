@@ -35,7 +35,7 @@ export async function addStation(stationData: {
   location_id: number;
   availability: boolean;
 }): Promise<StationResponse> {
-  const response = await fetch(`${API_BASE_URL}/station`, {
+  const response = await fetch(`${API_BASE_URL}/stations`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

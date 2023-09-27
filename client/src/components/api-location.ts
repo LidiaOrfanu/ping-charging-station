@@ -18,7 +18,7 @@ export interface ChargingStationLocationRequest {
 
 export const addLocation = async (locationData: ChargingStationLocationRequest) => {
     const response = await axios.post(
-      `${API_BASE_URL}/location`,
+      `${API_BASE_URL}/locations`,
       locationData,
       {
         headers: {

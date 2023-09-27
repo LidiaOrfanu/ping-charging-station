@@ -7,7 +7,6 @@ use axum::{
 use serde_json::{json, Value};
 use std::sync::Arc;
 use validator::Validate;
-// use validator::Validate;
 
 use crate::{
     db::location::{get_all, insert_new_location},
